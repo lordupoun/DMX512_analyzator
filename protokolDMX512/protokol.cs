@@ -9,7 +9,8 @@ namespace protokolDMX512
 {
     public class Protocol
     {
-        public bool loop = true; //do konstruktoru pøidat COM port atd.
+        private bool loop = true; //do konstruktoru pøidat COM port atd.
+        SerialPort sp = new SerialPort();
         public async Task Start()
         {
             //Stopwatch timer = new Stopwatch();
@@ -24,7 +25,7 @@ namespace protokolDMX512
             //Console.ReadKey();
             //Thread.Sleep(5000);
             //Console.WriteLine("Dobøe");
-            SerialPort sp = new SerialPort();
+            
             sp.PortName = "COM5";
             sp.BaudRate = 250000;
             sp.Parity = Parity.None;
@@ -82,6 +83,7 @@ namespace protokolDMX512
         }
         public void Stop()
         {
+            loop = false;          
             sp.Close();
         }
     }

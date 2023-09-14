@@ -33,12 +33,12 @@ namespace DMX512_analyzator
 
         private void buttonStart_Click(object sender, RoutedEventArgs e)
         {            
-           device1.Metoda();
+           device1.Start();
         }
 
         private void buttonStop_Click(object sender, RoutedEventArgs e)
         {
-            device1.loop = false; //setter
+            device1.Stop(); //setter
         }
     }
 }
