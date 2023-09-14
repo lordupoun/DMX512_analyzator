@@ -18,6 +18,7 @@ using System.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
 using protokolDMX512;
 
+
 namespace DMX512_analyzator
 {
     /// <summary>
@@ -25,6 +26,7 @@ namespace DMX512_analyzator
     /// </summary>
     public partial class MainWindow : Window
     {
+        private byte[] toSend = new byte[513];
         Protocol device1 = new Protocol();
         public MainWindow()
         {
@@ -32,14 +34,24 @@ namespace DMX512_analyzator
         }
 
         private void buttonStart_Click(object sender, RoutedEventArgs e)
-        {            
-           device1.Start();
+        {
+            device1.start();
         }
 
         private void buttonStop_Click(object sender, RoutedEventArgs e)
         {
-            device1.Stop(); //setter
+            device1.stop(); //setter
+        }
+
+        public byte[] getTextBoxes() //protokol.cs by musel mít includnutej hlavni namespace což je asi blbost
+        {
+            toSend[0] = 0x00;
+            toSend[1] = 0xFF;
+            toSend[2] = 0xFF;
+            toSend[3] = 0xFF;
+            return toSend;
         }
     }
+    
 }
 //co kdyby měl založit class uživatel?
