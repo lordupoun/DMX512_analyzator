@@ -1,0 +1,26 @@
+﻿<Window x:Class="DMX512_analyzator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DMX512_analyzator"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button x:Name="buttonStart" Content="Start" HorizontalAlignment="Left" Height="29" Margin="691,13,0,0" VerticalAlignment="Top" Width="99" Click="buttonStart_Click"/>
+        <Button x:Name="buttonStop" Content="Stop" HorizontalAlignment="Left" Height="29" Margin="691,47,0,0" VerticalAlignment="Top" Width="99" Click="buttonStop_Click"/>
+        <RadioButton Content="Dekadicky" HorizontalAlignment="Left" Margin="691,125,0,0" VerticalAlignment="Top"/>
+        <RadioButton Content="Hexadecimálně" HorizontalAlignment="Left" Margin="691,85,0,0" VerticalAlignment="Top"/>
+        <RadioButton Content="Binárně" HorizontalAlignment="Left" Margin="691,105,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="10,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21"/>
+        <TextBox HorizontalAlignment="Left" Margin="72,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21"/>
+        <TextBox HorizontalAlignment="Left" Margin="134,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21"/>
+        <TextBox HorizontalAlignment="Left" Margin="196,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21"/>
+        <TextBox HorizontalAlignment="Left" Margin="258,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21"/>
+        <TextBox HorizontalAlignment="Left" Margin="320,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21"/>
+        <TextBox HorizontalAlignment="Left" Margin="382,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21"/>
+        <TextBox HorizontalAlignment="Left" Margin="444,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21"/>
+        <TextBox HorizontalAlignment="Left" Margin="506,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21"/>
+
+    </Grid>
+</Window>
