@@ -4,18 +4,16 @@ using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading.Tasks;
 using System.Threading;
-using DMX
 
 namespace protokolDMX512
 {
     public class Protocol
     {
-        //byte[] toSend = new byte[513]; //Buï mùžu editovat tenhle byte, nebo dávat byte do metody Send
+        public byte[] toSend = new byte[513]; //Buï mùžu editovat tenhle byte, nebo dávat byte do metody Send
         private bool loop; //do konstruktoru pøidat COM port atd.
         SerialPort sp = new SerialPort();
-        public async Task send(byte[] toSend)
-        {
-            
+        private async Task Send()
+        {           
                 //sp.Write(nula, 0, 1);
                 sp.BreakState = true;
                 await Task.Delay(1); //lze použít i timer
@@ -24,7 +22,7 @@ namespace protokolDMX512
                 // sp.Write(jedna, 0, 1);
                 //await Task.Delay(1);
                 //Thread.Sleep(1);
-                sp.Write(toSend, 0, toSend.Length);
+                sp.Write(toSend, 0, toSend.Length); //------------------- Mohlo by být await na Write Zde najdou uplatnìní zejména IO bound operace, které nám pomohou snížit poèet vláken v aplikaci. V pøípadì tohoto typu operací není žádná èinnost provádìna na dalším vláknì vaší aplikace, ale èeká se na odpovìï jiného systému (napø. databáze). 
                 /* /*await Task.Delay(1); //co to dìlá?
                  sp.BreakState = true;
                  if (test == true)
@@ -53,7 +51,7 @@ namespace protokolDMX512
 
             
         }
-        public void start()
+        public async Task Start()
         {
             loop = true;
             //Stopwatch timer = new Stopwatch();
@@ -75,10 +73,10 @@ namespace protokolDMX512
             sp.ReadTimeout = 500;
             sp.WriteTimeout = 500;
             sp.Open(); //pøidat try catch pokud se neotevøe
-        while (loop == true)
-        {
-            send(getTextBoxes());
-        }
+            while (loop == true) //možná pøidat do send
+            {
+               await Send();
+            }
             //timer.Start();
             //TimeSpan ts;
             //ts = timer.Elapsed;
@@ -88,10 +86,18 @@ namespace protokolDMX512
             //bool loop = true;
 
         }
-        public void stop()
+        public void Stop()
         {
             loop = false;          
             sp.Close();
         }
     }
 }
+/*static void udelay(long us)
+    {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        long v = (us * System.Diagnostics.Stopwatch.Frequency )/ 1000000;
+        while (sw.ElapsedTicks < v)
+        {
+        }
+    }*/
