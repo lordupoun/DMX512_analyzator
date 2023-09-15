@@ -29,23 +29,27 @@ namespace DMX512_analyzator
         private byte[] toSend = new byte[513];
         Protocol device1 = new Protocol();
         bool windowLoaded = false;
-        TextBox[] textBoxArray=new TextBox[513];
-        public MainWindow()
+        TextBox[] textBoxArray;//=new TextBox[513];
+        //IEnumerable<TextBox> textBoxCollection;
+    public MainWindow()
         {
             InitializeComponent();
+            textBoxArray= mainGrid.Children.OfType<TextBox>().Cast<TextBox>().ToArray();
+            //textBoxArray = textBoxCollection;
             windowLoaded = true;
             /*for(int i=0;i<8;i++)
             {
+                textBoxArray[i]= new TextBox();
                 textBoxArray[i]=textBox1;
             }*/
-            textBoxArray[0] = textBox0;
+            /*textBoxArray[0] = textBox0;
             textBoxArray[1] = textBox1;
             textBoxArray[2] = textBox2;
             textBoxArray[3] = textBox3;
             textBoxArray[4] = textBox4;
             textBoxArray[5] = textBox5;
             textBoxArray[6] = textBox6;
-            textBoxArray[7] = textBox7; //pro získání byte ze stringu lze použít encoding, co je lepší? Parse/Convert/Encoding
+            textBoxArray[7] = textBox7; //pro získání byte ze stringu lze použít encoding, co je lepší? Parse/Convert/Encoding*/
         }
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
@@ -61,7 +65,7 @@ namespace DMX512_analyzator
 
         public void setDataToSend() //vždy by se měl aktualizovat jen ten jeden určitej byte, jen jedno určený okýnko (ale ideálně jednou funkcí) //protokol.cs by musel mít includnutej hlavni namespace což je asi blbost //načtení dat buď s enterem nebo se změnou textu
         {
-            for(int i=0; i<8; i++)
+            for(int i=0; i<8;i++)
             {
                 //bool parseSuccess = byte.Parse(textBoxArray[i].Text, NumberStyles.HexNumber, out device1.toSend[i]);
                 //bool test = byte.TryParse(textBoxArray[i].Text, NumberStyles.HexNumber, out device1.toSend[i]
@@ -69,7 +73,7 @@ namespace DMX512_analyzator
                 //device1.toSend[i]=Convert.ToByte(textBoxArray[i].Text, 16);//<-------------------------Taky možnost - ale hází out of range
                 if (byte.TryParse(textBoxArray[i].Text, NumberStyles.HexNumber, null, out device1.toSend[i])==false)
                 {
-                    MessageBox.Show("opravit");
+                    MessageBox.Show(textBoxArray[i].Name);
                 }
                 //device1.toSend[i] = Convert.FromHexString(textBoxArray[i].Text);
                 //device1.toSend[i] = (byte)textBoxArray[i].Text;
@@ -83,16 +87,29 @@ namespace DMX512_analyzator
 
         private void test_Click(object sender, RoutedEventArgs e)
         {
-            setDataToSend();
+            //setDataToSend();
         }
 
-        private void text_changed(object sender, TextChangedEventArgs e)
+        private void text_changed(object sender, TextChangedEventArgs e) //přejmenovat
         {
-            if(windowLoaded==true)//zabrani padu
-            setDataToSend();
+            TextBox boxChanged = (TextBox)sender;
+            //int index = textBoxArray.indexOf(boxChanged.Name);
+            if (windowLoaded == true)//zabrani padu - pak odstranit
+            {
+                //setDataToSend();
+                if (byte.TryParse(boxChanged.Text, NumberStyles.HexNumber, null, out device1.toSend[Array.IndexOf(textBoxArray, boxChanged)]) == false)
+                {
+                    MessageBox.Show("opravit");
+                }
+            }
         }
     }
     
 }
 //co kdyby měl založit class uživatel?
 //načtení
+/*IEnumerable<TextBox> TextboxCollection = rootControl.Children.OfType<TextBox>();
+            foreach(TextBox tb in TextboxCollection)
+            {
+                tb.Text = "Text";
+            }*/

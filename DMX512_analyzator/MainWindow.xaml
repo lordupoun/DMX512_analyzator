@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:DMX512_analyzator"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid x:Name="mainGrid">
         <Button x:Name="buttonStart" Content="Start" HorizontalAlignment="Left" Height="29" Margin="691,13,0,0" VerticalAlignment="Top" Width="99" Click="ButtonStart_Click"/>
         <Button x:Name="buttonStop" Content="Stop" HorizontalAlignment="Left" Height="29" Margin="691,47,0,0" VerticalAlignment="Top" Width="99" Click="ButtonStop_Click"/>
         <RadioButton Content="Dekadicky" HorizontalAlignment="Left" Margin="691,125,0,0" VerticalAlignment="Top"/>
         <RadioButton Content="Hexadecimálně" HorizontalAlignment="Left" Margin="691,85,0,0" VerticalAlignment="Top"/>
         <RadioButton Content="Binárně" HorizontalAlignment="Left" Margin="691,105,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBox0" HorizontalAlignment="Left" Margin="10,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21"/>
+        <TextBox x:Name="textBox0" HorizontalAlignment="Left" Margin="10,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
         <TextBox x:Name="textBox1" HorizontalAlignment="Left" Margin="72,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
         <TextBox x:Name="textBox2" HorizontalAlignment="Left" Margin="134,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
         <TextBox x:Name="textBox3" HorizontalAlignment="Left" Margin="196,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
@@ -22,6 +22,30 @@
         <TextBox x:Name="textBox7" HorizontalAlignment="Left" Margin="444,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
         <TextBox x:Name="textBox8" HorizontalAlignment="Left" Margin="506,13,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
         <Button x:Name="test" Content="Button" HorizontalAlignment="Left" Margin="720,191,0,0" VerticalAlignment="Top" Click="test_Click"/>
+        <TextBox x:Name="textBox9" HorizontalAlignment="Left" Margin="72,40,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox10" HorizontalAlignment="Left" Margin="134,40,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox11" HorizontalAlignment="Left" Margin="196,40,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox12" HorizontalAlignment="Left" Margin="258,40,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox13" HorizontalAlignment="Left" Margin="320,40,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox14" HorizontalAlignment="Left" Margin="382,40,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox15" HorizontalAlignment="Left" Margin="444,40,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox16" HorizontalAlignment="Left" Margin="506,40,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox17" HorizontalAlignment="Left" Margin="72,70,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox18" HorizontalAlignment="Left" Margin="134,70,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox19" HorizontalAlignment="Left" Margin="196,70,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox20" HorizontalAlignment="Left" Margin="258,70,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox21" HorizontalAlignment="Left" Margin="320,70,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox22" HorizontalAlignment="Left" Margin="382,70,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox23" HorizontalAlignment="Left" Margin="444,70,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox24" HorizontalAlignment="Left" Margin="506,70,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox25" HorizontalAlignment="Left" Margin="72,98,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox26" HorizontalAlignment="Left" Margin="134,98,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox27" HorizontalAlignment="Left" Margin="196,98,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox28" HorizontalAlignment="Left" Margin="258,98,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox29" HorizontalAlignment="Left" Margin="320,98,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox30" HorizontalAlignment="Left" Margin="382,98,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox31" HorizontalAlignment="Left" Margin="444,98,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+        <TextBox x:Name="textBox32" HorizontalAlignment="Left" Margin="506,98,0,0" TextWrapping="Wrap" Text="00" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
 
     </Grid>
 </Window>

@@ -9,7 +9,7 @@ namespace protokolDMX512
 {
     public class Protocol
     {
-        public byte[] toSend = new byte[513]; //Buï mùžu editovat tenhle byte, nebo dávat byte do metody Send
+        public byte[] toSend = new byte[513]; //Buï mùžu editovat tenhle byte, nebo dávat byte do metody Send //zanechat private a dát setter
         private bool loop; //do konstruktoru pøidat COM port atd.
         SerialPort sp = new SerialPort();
         private async Task Send()
