@@ -30,32 +30,17 @@ namespace DMX512_analyzator
         Protocol device1 = new Protocol();
         bool windowLoaded = false;
         TextBox[] textBoxArray;//=new TextBox[513];
-        //IEnumerable<TextBox> textBoxCollection;
     public MainWindow()
         {
             InitializeComponent();
-            textBoxArray= mainGrid.Children.OfType<TextBox>().Cast<TextBox>().ToArray();
-            //textBoxArray = textBoxCollection;
+            textBoxArray= mainGrid.Children.OfType<TextBox>().Cast<TextBox>().ToArray(); //Castování kolekce na array
             windowLoaded = true;
-            /*for(int i=0;i<8;i++)
-            {
-                textBoxArray[i]= new TextBox();
-                textBoxArray[i]=textBox1;
-            }*/
-            /*textBoxArray[0] = textBox0;
-            textBoxArray[1] = textBox1;
-            textBoxArray[2] = textBox2;
-            textBoxArray[3] = textBox3;
-            textBoxArray[4] = textBox4;
-            textBoxArray[5] = textBox5;
-            textBoxArray[6] = textBox6;
-            textBoxArray[7] = textBox7; //pro získání byte ze stringu lze použít encoding, co je lepší? Parse/Convert/Encoding*/
         }
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
             device1.Start();
-            setDataToSend(); //pak asi i vymazat
+            //setDataToSend(); //pak asi i vymazat
         }
 
         private void ButtonStop_Click(object sender, RoutedEventArgs e)
@@ -63,45 +48,51 @@ namespace DMX512_analyzator
             device1.Stop(); //setter
         }
 
-        public void setDataToSend() //vždy by se měl aktualizovat jen ten jeden určitej byte, jen jedno určený okýnko (ale ideálně jednou funkcí) //protokol.cs by musel mít includnutej hlavni namespace což je asi blbost //načtení dat buď s enterem nebo se změnou textu
+        public void setDataToSend() //<----- data na odeslání - vhodné pro event k tlačítku //vždy by se měl aktualizovat jen ten jeden určitej byte, jen jedno určený okýnko (ale ideálně jednou funkcí) //protokol.cs by musel mít includnutej hlavni namespace což je asi blbost //načtení dat buď s enterem nebo se změnou textu
         {
             for(int i=0; i<8;i++)
             {
-                //bool parseSuccess = byte.Parse(textBoxArray[i].Text, NumberStyles.HexNumber, out device1.toSend[i]);
-                //bool test = byte.TryParse(textBoxArray[i].Text, NumberStyles.HexNumber, out device1.toSend[i]
-                
                 //device1.toSend[i]=Convert.ToByte(textBoxArray[i].Text, 16);//<-------------------------Taky možnost - ale hází out of range
                 if (byte.TryParse(textBoxArray[i].Text, NumberStyles.HexNumber, null, out device1.toSend[i])==false)
                 {
                     MessageBox.Show(textBoxArray[i].Name);
                 }
-                //device1.toSend[i] = Convert.FromHexString(textBoxArray[i].Text);
-                //device1.toSend[i] = (byte)textBoxArray[i].Text;
             }
-            /*device1.toSend[0] = byte.Parse(textBox0.Text); //přenastavit pro různá zařízení
-            device1.toSend[1] = byte.Parse(textBox1.Text, NumberStyles.HexNumber);
-            device1.toSend[2] = byte.Parse(textBox2.Text, NumberStyles.HexNumber);//.ToByte(textBox1.Text, 16); <- promine null
-            device1.toSend[3] = byte.Parse(textBox3.Text, NumberStyles.HexNumber);// Convert.ToByte(textBox1.Text, 16);
-            device1.toSend[4] = byte.Parse(textBox4.Text, NumberStyles.HexNumber);*/
         }
 
         private void test_Click(object sender, RoutedEventArgs e)
         {
             //setDataToSend();
+            //mainFrame.Content = new CustomValuePage();
+            mainFrame.Navigate(new ListBoxPage());
         }
 
-        private void text_changed(object sender, TextChangedEventArgs e) //přejmenovat
+        private void text_changed(object sender, TextChangedEventArgs e) //<- data na odeslání při změně textu
         {
-            TextBox boxChanged = (TextBox)sender;
-            //int index = textBoxArray.indexOf(boxChanged.Name);
+            TextBox boxChanged = (TextBox)sender;     
             if (windowLoaded == true)//zabrani padu - pak odstranit
             {
-                //setDataToSend();
-                if (byte.TryParse(boxChanged.Text, NumberStyles.HexNumber, null, out device1.toSend[Array.IndexOf(textBoxArray, boxChanged)]) == false)
-                {
-                    MessageBox.Show("opravit");
+                if(radioHex.IsChecked==true) //------------tyhle řádky by nemusely být duplicitně
+                { 
+                    if (byte.TryParse(boxChanged.Text, NumberStyles.HexNumber, null, out device1.toSend[Array.IndexOf(textBoxArray, boxChanged)]) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější
+                    {
+                        MessageBox.Show("opravit");
+                    }
                 }
+                if (radioDec.IsChecked == true)
+                {
+                    if (byte.TryParse(boxChanged.Text, out device1.toSend[Array.IndexOf(textBoxArray, boxChanged)]) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější
+                    {
+                        MessageBox.Show("opravit");
+                    }
+                }
+                if (radioBin.IsChecked == true)
+                {
+                    device1.toSend[Array.IndexOf(textBoxArray, boxChanged)]= Convert.ToByte(boxChanged.Text, 2);
+                }
+                testBtn.Background = new SolidColorBrush(Color.FromArgb(device1.toSend[1], device1.toSend[2], device1.toSend[3], device1.toSend[4]));
             }
+            
         }
     }
     
@@ -113,3 +104,4 @@ namespace DMX512_analyzator
             {
                 tb.Text = "Text";
             }*/
+//kliknutí na radioButton překonvertuje obsah všech buněk na příslušnej formát
