@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace DMX512_analyzator
         public ListBoxPage()
         {
             InitializeComponent();
+            //var mainWindow = (MainWindow)Application.Current.MainWindow;
         }
 
         private void ScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -43,6 +45,11 @@ namespace DMX512_analyzator
         private void textBoxA_TextChanged(object sender, TextChangedEventArgs e)
         {
             ScrollBarA.Value = byte.Parse(textBoxA.Text);
+           /* TextBox boxChanged = (TextBox)sender;
+            /*if (byte.TryParse(boxChanged.Text, NumberStyles.HexNumber, null, out device1.toSend[ScrollBarA.Value]) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější
+            {
+                MessageBox.Show("opravit");
+            }*/
         }
     }
 }

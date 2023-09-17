@@ -19,6 +19,14 @@ using System.Diagnostics;
 using protokolDMX512;
 using System.Globalization;
 
+/**
+ * ToDo:
+ * Nebudou komunikovat stránka se stránkou ale stránky s třídou API (Víc COM by se vždy posílal argument, kterého se to týká)
+ * Předělat Grafiku, Grid, nastavit MinMax
+ * Setter pro toSend[]
+ * Nastavení COM portu automaticky
+ * Pomalý režim -> odešle jen při stisknutí tlačítka?
+ * **/
 namespace DMX512_analyzator
 {   //UI běží na stejném vlákně jako kód
     /// <summary>
@@ -72,7 +80,7 @@ namespace DMX512_analyzator
             TextBox boxChanged = (TextBox)sender;     
             if (windowLoaded == true)//zabrani padu - pak odstranit
             {
-                if(radioHex.IsChecked==true) //------------tyhle řádky by nemusely být duplicitně
+                if(radioHex.IsChecked==true) //------------tyhle řádky by nemusely být duplicitně //-----------------------------Přehodit do jiné třídy
                 { 
                     if (byte.TryParse(boxChanged.Text, NumberStyles.HexNumber, null, out device1.toSend[Array.IndexOf(textBoxArray, boxChanged)]) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější
                     {
