@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid x:Name="mainGrid">
         <Button x:Name="buttonStart" Content="Start" HorizontalAlignment="Left" Height="29" Margin="691,13,0,0" VerticalAlignment="Top" Width="99" Click="ButtonStart_Click"/>
-        <Button x:Name="buttonStop" Content="Stop" HorizontalAlignment="Left" Height="29" Margin="691,47,0,0" VerticalAlignment="Top" Width="99" Click="ButtonStop_Click"/>
+        <Button x:Name="buttonStop" Content="Stop" HorizontalAlignment="Left" Height="29" Margin="691,47,0,0" VerticalAlignment="Top" Width="99" Click="ButtonStop_Click" IsEnabled="False"/>
         <RadioButton x:Name="radioDec" Content="Dekadicky" HorizontalAlignment="Left" Margin="691,125,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="radioHex" Content="Hexadecimálně" HorizontalAlignment="Left" Margin="691,85,0,0" VerticalAlignment="Top" IsChecked="True"/>
         <RadioButton x:Name="radioBin" Content="Binárně" HorizontalAlignment="Left" Margin="691,105,0,0" VerticalAlignment="Top"/>

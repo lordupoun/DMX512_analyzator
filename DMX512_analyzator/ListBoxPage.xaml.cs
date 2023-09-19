@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -16,14 +17,18 @@ using System.Windows.Shapes;
 
 namespace DMX512_analyzator
 {
-    /// <summary>
-    /// Interaction logic for ListBoxPage.xaml
-    /// </summary>
-    public partial class ListBoxPage : Page
+	/// <summary>
+	/// Interaction logic for ListBoxPage.xaml
+	/// </summary>
+	public partial class ListBoxPage : Page
     {
-        public ListBoxPage()
+            bool ready;
+		Protocol[] protocolArray = new Protocol[256];
+		public ListBoxPage(Protocol[] protocolArray)
         {
+            this.protocolArray = protocolArray;
             InitializeComponent();
+            ready = true;
             //var mainWindow = (MainWindow)Application.Current.MainWindow;
         }
 
@@ -44,12 +49,17 @@ namespace DMX512_analyzator
 
         private void textBoxA_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ScrollBarA.Value = byte.Parse(textBoxA.Text);
-           /* TextBox boxChanged = (TextBox)sender;
+        
+            TextBox boxChanged = (TextBox)sender;
             /*if (byte.TryParse(boxChanged.Text, NumberStyles.HexNumber, null, out device1.toSend[ScrollBarA.Value]) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější
             {
                 MessageBox.Show("opravit");
             }*/
         }
-    }
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+				protocolArray[0].SendHex(textBoxB, int.Parse(textBoxA.Text));
+		}
+	}
 }
