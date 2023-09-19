@@ -12,7 +12,7 @@ namespace DMX512_analyzator
 	public class Protocol
 	{
 		public byte[] toSend = new byte[513]; //Buď můžu editovat tenhle byte, nebo dávat byte do metody Send //zanechat private a dát setter
-		private bool loop; //do konstruktoru přidat COM port atd.
+		private bool loop; //do konstruktoru přidat COM port atd.....
 		SerialPort sp = new SerialPort();
 		public Protocol()
 		{
