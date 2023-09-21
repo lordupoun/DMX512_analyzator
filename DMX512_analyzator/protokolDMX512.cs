@@ -46,7 +46,7 @@ namespace DMX512_analyzator
 		{
 			loop = false;
 			sp.Close();
-		}
+		}//Předělat BoxChanged na string
 		/// <summary>Odešle hexadecimální obsah textboxu jako byte s int číslem. Vrací true v případě úspěchu, false v případě neúspěchu.</summary>
 		public bool SendHex(TextBox BoxChanged, int index)
 		{
@@ -63,6 +63,14 @@ namespace DMX512_analyzator
 		public void SendBin(TextBox BoxChanged, int index)
 		{
 			toSend[index] = Convert.ToByte(BoxChanged.Text, 2);
+		}
+		/// <summary>Odešle byte s příslušným indexem, v případě, že je null, odešle nulu</summary>
+		public byte getToSendValue(int index)
+		{
+			/*if (toSend[index] == null)
+				return 0;
+			else*/
+				return toSend[index];
 		}
 	}
 }

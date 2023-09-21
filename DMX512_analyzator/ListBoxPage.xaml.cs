@@ -23,10 +23,13 @@ namespace DMX512_analyzator
 	public partial class ListBoxPage : Page
     {
             bool ready;
+        int format;
 		Protocol[] protocolArray = new Protocol[256];
-		public ListBoxPage(Protocol[] protocolArray)
+		private RadioButton[] radioArray;
+		public ListBoxPage(Protocol[] protocolArray, RadioButton[] radioArray)
         {
             this.protocolArray = protocolArray;
+            this.radioArray = radioArray;
             InitializeComponent();
             ready = true;
             //var mainWindow = (MainWindow)Application.Current.MainWindow;
@@ -39,15 +42,15 @@ namespace DMX512_analyzator
 
         private void ScrollBarA_KeyUp(object sender, KeyEventArgs e)
         {
-
+            textBoxA.Text=Convert.ToString(int.Parse(textBoxA.Text) - 1);
         }
 
         private void ScrollBarA_KeyDown(object sender, KeyEventArgs e)
         {
+			textBoxA.Text = Convert.ToString(int.Parse(textBoxA.Text) +2);
+		}
 
-        }
-
-        private void textBoxA_TextChanged(object sender, TextChangedEventArgs e)
+        private void textBoxA_TextChanged(object sender, TextChangedEventArgs e) //vymyslet jak to bude fungovat když bude zaškrtlej radioBox
         {
         
             TextBox boxChanged = (TextBox)sender;
@@ -55,11 +58,28 @@ namespace DMX512_analyzator
             {
                 MessageBox.Show("opravit");
             }*/
+            //textBoxB.Text = Convert.ToString(protocolArray[0].getToSendValue(int.Parse(textBoxA.Text)));
         }
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
+            if (radioArray[0].IsChecked==true)
+            { 
 				protocolArray[0].SendHex(textBoxB, int.Parse(textBoxA.Text));
+			}
+			else if(radioArray[1].IsChecked == true)
+			{
+				protocolArray[0].SendDec(textBoxB, int.Parse(textBoxA.Text));
+			}
+			else if(radioArray[2].IsChecked == true)
+			{
+				protocolArray[0].SendBin(textBoxB, int.Parse(textBoxA.Text));
+			}
+
 		}
+        public void setFormat(int format)
+        {
+            this.format = format;
+        }
 	}
 }
