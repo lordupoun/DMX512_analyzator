@@ -12,7 +12,7 @@
         <RadioButton x:Name="radioDec" Content="Dekadicky" HorizontalAlignment="Left" Margin="684,132,0,0" VerticalAlignment="Top" Checked="radioDec_Checked"/>
         <RadioButton x:Name="radioHex" Content="Hexadecimálně" HorizontalAlignment="Left" Margin="684,92,0,0" VerticalAlignment="Top" IsChecked="True" Checked="RadioHex_Checked"/>
         <RadioButton x:Name="radioBin" Content="Binárně" HorizontalAlignment="Left" Margin="684,112,0,0" VerticalAlignment="Top" Checked="radioBin_Checked"/>
-        <Button x:Name="testBtn" Content="Barva" HorizontalAlignment="Left" Margin="684,192,0,0" VerticalAlignment="Top" Click="test_Click" Height="48" Width="99"/>
+        <Button x:Name="testBtn" Content="Barva" HorizontalAlignment="Left" Margin="684,242,0,0" VerticalAlignment="Top" Click="test_Click" Height="48" Width="99"/>
         <Frame x:Name="mainFrame" Content="" Margin="0,10,114,140" NavigationUIVisibility="Hidden"/>
         <Menu Margin="0,0,0,370">
             <MenuItem Header="Rozložení">
@@ -21,7 +21,9 @@
                 <MenuItem Header="Šavle"/>
             </MenuItem>
         </Menu>
-        <Label Content="COM Port:" HorizontalAlignment="Left" Margin="679,161,0,0" VerticalAlignment="Top"/>
+        <Label Content="Port:" HorizontalAlignment="Left" Margin="679,163,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="portBox" HorizontalAlignment="Left" Margin="713,163,0,0" VerticalAlignment="Top" Width="83" SelectionChanged="portBox_SelectionChanged"/>
+        <Button x:Name="refreshButton" Content="Obnovit" HorizontalAlignment="Left" Margin="692,10,0,0" Width="92" Click="refreshButton_Click" VerticalAlignment="Center"/>
 
     </Grid>
 </Window>

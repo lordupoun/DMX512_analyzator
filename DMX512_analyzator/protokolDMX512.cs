@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Controls;
 using System.Globalization;
+using System.Windows;
 
 namespace DMX512_analyzator
 {
@@ -14,7 +15,11 @@ namespace DMX512_analyzator
 		public byte[] toSend = new byte[513]; //Buď můžu editovat tenhle byte, nebo dávat byte do metody Send //zanechat private a dát setter
 		private bool loop; //do konstruktoru přidat COM port atd.....
 		SerialPort sp = new SerialPort();
-		public Protocol()
+		public Protocol() //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)
+		{
+
+		}
+		public Protocol(String port) //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)
 		{
 
 		}
