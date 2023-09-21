@@ -69,7 +69,7 @@ namespace DMX512_analyzator
 			windowLoaded = true;
 			RefreshPorts();
 			portBox.SelectedIndex = 0;
-			protocolList.Add(new Protocol((String)portBox.SelectedValue)); //Protocol přidávám na základě portu -> proto lepší dictionary asi...
+			protocolList.Add(new Protocol((String)portBox.SelectedValue)); //Protocol přidávám na základě portu -> proto lepší dictionary asi......
 			//portBox.Items.AddRange(SerialPort.GetPortNames().ToArray);			
 			mainFrame.Navigate(new TextBoxPage(protocolArray, radioArray));
 			//int[] test = new int[100000];
