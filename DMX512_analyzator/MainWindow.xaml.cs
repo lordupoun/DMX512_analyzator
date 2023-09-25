@@ -56,7 +56,8 @@ namespace DMX512_analyzator
 		bool windowLoaded = false;
 		//TextBox[] textBoxArray;//=new TextBox[513];
 		RadioButton[] radioArray = new RadioButton[3];
-		List<Protocol> protocolList = new List<Protocol>();	
+		//List<Protocol> protocolList = new List<Protocol>();	
+		Dictionary<string, Protocol> protocolDictionary = new Dictionary<String,Protocol>();
 		public MainWindow()
 		{
 			//Application["Name"] = "pandian";
@@ -69,7 +70,8 @@ namespace DMX512_analyzator
 			windowLoaded = true;
 			RefreshPorts();
 			portBox.SelectedIndex = 0;
-			protocolList.Add(new Protocol((String)portBox.SelectedValue)); //Protocol přidávám na základě portu -> proto lepší dictionary asi......
+			//protocolList.Add(new Protocol((String)portBox.SelectedValue)); //Protocol přidávám na základě portu -> proto lepší dictionary asi......
+			protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue));
 			//portBox.Items.AddRange(SerialPort.GetPortNames().ToArray);			
 			mainFrame.Navigate(new TextBoxPage(protocolArray, radioArray));
 			//int[] test = new int[100000];
