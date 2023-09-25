@@ -19,13 +19,14 @@ using System.Diagnostics;
 //using protokolDMX512;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
 
 /**
  * ToDo:
  * Najít a vymazat
  * ----Nebudou komunikovat stránka se stránkou ale stránky s třídou API (Víc COM by se vždy posílal argument, kterého se to týká) -> Hotovo - předávají si informace v přetížení
- * Přidat podporu více COM - mrknout na volný COM porty do systému
- * Přidat features - přebírání hodnot v designech, konverze hodnot
+ * ----Přidat podporu více COM - mrknout na volný COM porty do systému
+ * Přidat features - přebírání hodnot v designech - načtení hodnot pro příslušnej COM a design, konverze hodnot
  * Tab pro textboxpage ...
  * Opravit ListBox Page +1
  * ---Původní Layout hodit jako Page, tlačítka nechat v rámci Window - někde k tomu mám komentář
@@ -38,6 +39,7 @@ using System.Text.RegularExpressions;
  * Pro případ LISTu -> Do listu uchovávat Protocoly (vzít vybranej COM v tabulce z něj vzít číslo, zkontrolovat jestli neexistuje a případně na pozici čísla vytvořit novou instanci), hledat je podle názvu "COM4", nalezenej uložit do proměnný která je připsaná všem metodám (aby nemusel hledat pro každej protokolArray[0] -> všechny najít a nahradit -> respektive passnout proměnnou pro page (kdybych předával mapu, bylo by to takový blbý asi)) -> List je závislej na knihovnách a může se měnit -> je míň robustní teoreticky
  * Pro případ Array -> Do array uchovávat Protocoly, hledat je podle čísla a předávat číslo, oboje obsahuje pouze reference; RAM vs CPU ------- u pole není potřeba trápit ani pamět ani CPU s dalšími operacemi, obzvlášť když přesně vím kolik paměti budu chtít (a není to moc, vzheldem k tomu, že je to reference) -> ale ARRAY způsob se vztahuje k názvu COM -> ale nemůžu hledat Contains(nějakej Protocol) -> na to by vlastně byla lepší Mapa
  * **/
+//příště možná postupovat po tlačítkách (pro jednotlivý eventy vytvořit tlačítka s funkcemi
 namespace DMX512_analyzator
 {   //UI běží na stejném vlákně jako kód
 	/// <summary>
@@ -73,7 +75,7 @@ namespace DMX512_analyzator
 			//protocolList.Add(new Protocol((String)portBox.SelectedValue)); //Protocol přidávám na základě portu -> proto lepší dictionary asi......
 			protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue));
 			//portBox.Items.AddRange(SerialPort.GetPortNames().ToArray);			
-			mainFrame.Navigate(new TextBoxPage(protocolArray, radioArray));
+			mainFrame.Navigate(new TextBoxPage(protocolDictionary, radioArray, portBox));
 			//int[] test = new int[100000];
 			//test[0] = 1000000;
 			//MessageBox.Show(Regex.Match("COM15", @"\d+").Value);
@@ -82,7 +84,8 @@ namespace DMX512_analyzator
 
 		private void ButtonStart_Click(object sender, RoutedEventArgs e)
 		{
-			protocolArray[0].Start(); //tlačítko start bude v každým page, a při startu kontaktuje environment a sdělí mu číslo COM
+			//protocolArray[0].Start(); //tlačítko start bude v každým page, a při startu kontaktuje environment a sdělí mu číslo COM
+			protocolDictionary[(String)portBox.SelectedValue].Start();
 			buttonStart.IsEnabled = false;
 			buttonStop.IsEnabled = true;
 			//setDataToSend(); //pak asi i vymazat
@@ -91,7 +94,7 @@ namespace DMX512_analyzator
 
 		private void ButtonStop_Click(object sender, RoutedEventArgs e)
 		{
-			protocolArray[0].Stop(); //setter
+			protocolDictionary[(String)portBox.SelectedValue].Stop(); //setter
 			buttonStart.IsEnabled = true;
 			buttonStop.IsEnabled = false;
 		}
@@ -119,12 +122,12 @@ namespace DMX512_analyzator
 
 		private void ChangeToListBoxPage(object sender, RoutedEventArgs e) //řeší se jestli je datový typ předanej jako hodnota nebo jako reference
 		{
-			mainFrame.Navigate(new ListBoxPage(protocolArray, radioArray)); //kdybych při tom změnil instanci, světla by problikla
+			mainFrame.Navigate(new ListBoxPage(protocolDictionary, radioArray, portBox)); //kdybych při tom změnil instanci, světla by problikla
 		}
 
 		private void ChangeToTextBoxPage(object sender, RoutedEventArgs e) //řeší se jestli je datový typ předanej jako hodnota nebo jako reference
 		{
-			mainFrame.Navigate(new TextBoxPage(protocolArray, radioArray)); //kdybych při tom změnil instanci, světla by problikla
+			mainFrame.Navigate(new TextBoxPage(protocolDictionary, radioArray, portBox)); //kdybych při tom změnil instanci, světla by problikla
 		}
 
 		private void RadioHex_Checked(object sender, RoutedEventArgs e) //smazat
@@ -160,6 +163,13 @@ namespace DMX512_analyzator
 		private void portBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			//if(protocolList.Contains((String)portBox.SelectedValue)==true)
+		}
+		void refreshContent()
+		{
+			//radioBoxy
+			//Aktuální stránku
+			//Aktuální port
+
 		}
 	}
     

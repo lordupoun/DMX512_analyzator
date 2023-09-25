@@ -26,10 +26,13 @@ namespace DMX512_analyzator
         int format;
 		Protocol[] protocolArray = new Protocol[256];
 		private RadioButton[] radioArray;
-		public ListBoxPage(Protocol[] protocolArray, RadioButton[] radioArray)
+		Dictionary<string, Protocol> protocolDictionary = new Dictionary<String, Protocol>();
+        private ComboBox portBox;
+		public ListBoxPage(Dictionary<String, Protocol> protocolDictionary, RadioButton[] radioArray, ComboBox portBox)
         {
-            this.protocolArray = protocolArray;
-            this.radioArray = radioArray;
+			this.protocolDictionary = protocolDictionary;
+			this.radioArray = radioArray;
+            this.portBox = portBox;
             InitializeComponent();
             ready = true;
             //var mainWindow = (MainWindow)Application.Current.MainWindow;
@@ -64,16 +67,16 @@ namespace DMX512_analyzator
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
             if (radioArray[0].IsChecked==true)
-            { 
-				protocolArray[0].SendHex(textBoxB, int.Parse(textBoxA.Text));
+            {
+				protocolDictionary[(String)portBox.SelectedValue].SendHex(textBoxB, int.Parse(textBoxA.Text));
 			}
 			else if(radioArray[1].IsChecked == true)
 			{
-				protocolArray[0].SendDec(textBoxB, int.Parse(textBoxA.Text));
+				protocolDictionary[(String)portBox.SelectedValue].SendDec(textBoxB, int.Parse(textBoxA.Text));
 			}
 			else if(radioArray[2].IsChecked == true)
 			{
-				protocolArray[0].SendBin(textBoxB, int.Parse(textBoxA.Text));
+				protocolDictionary[(String)portBox.SelectedValue].SendBin(textBoxB, int.Parse(textBoxA.Text));
 			}
 
 		}

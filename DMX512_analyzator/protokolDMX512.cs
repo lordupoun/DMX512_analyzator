@@ -14,6 +14,7 @@ namespace DMX512_analyzator
 	{
 		public byte[] toSend = new byte[513]; //Buď můžu editovat tenhle byte, nebo dávat byte do metody Send //zanechat private a dát setter
 		private bool loop; //do konstruktoru přidat COM port atd.....
+		String port;
 		SerialPort sp = new SerialPort();
 		public Protocol() //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)
 		{
@@ -21,7 +22,7 @@ namespace DMX512_analyzator
 		}
 		public Protocol(String port) //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)
 		{
-
+			this.port = port;
 		}
 		private async Task Send()
 		{
@@ -33,7 +34,7 @@ namespace DMX512_analyzator
 		public async Task Start()
 		{
 			loop = true;
-			sp.PortName = "COM3"; //Nastavení COM portu v rámci konstruktoru
+			sp.PortName = port; //Nastavení COM portu v rámci konstruktoru
 			sp.BaudRate = 250000;
 			sp.Parity = Parity.None;
 			sp.DataBits = 8;

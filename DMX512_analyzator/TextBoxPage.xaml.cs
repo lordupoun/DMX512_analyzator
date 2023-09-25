@@ -24,11 +24,15 @@ namespace DMX512_analyzator
 		int format;
 		private TextBox[] textBoxArray = new TextBox[513];
 		private Protocol[] protocolArray = new Protocol[256];
+		Dictionary<string, Protocol> protocolDictionary = new Dictionary<String, Protocol>();
 		private RadioButton[] radioArray;
-		public TextBoxPage(Protocol[] protocolArray, RadioButton[] radioArray)
+		private ComboBox portBox;
+
+		public TextBoxPage(Dictionary<String,Protocol> protocolDictionary, RadioButton[] radioArray, ComboBox portBox)
 		{
-			this.protocolArray = protocolArray;
-			this.radioArray = radioArray;	
+			this.protocolDictionary = protocolDictionary;
+			this.radioArray = radioArray;
+			this.portBox = portBox;
 			InitializeComponent();
 			textBoxArray = mainGrid.Children.OfType<TextBox>().Cast<TextBox>().ToArray(); //Castování kolekce na array
 			windowLoaded = true;
@@ -40,21 +44,21 @@ namespace DMX512_analyzator
 			{
 				if (radioArray[0].IsChecked == true) //------------tyhle řádky by nemusely být duplicitně //-----------------------------Přehodit do jiné třídy
 				{
-					if (protocolArray[0].SendHex(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //když bude celá metoda pryč, nemůžu přistupovat k TextBoxArray, když jen část, nemůžu ji sdílet...
+					if (protocolDictionary[(String)portBox.SelectedValue].SendHex(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //když bude celá metoda pryč, nemůžu přistupovat k TextBoxArray, když jen část, nemůžu ji sdílet...
 					{
 						MessageBox.Show("opravit"); //out device1.toSend[Array.IndexOf(textBoxArray, boxChanged)
 					}
 				}
 				else if (radioArray[1].IsChecked == true)
 				{
-					if (protocolArray[0].SendDec(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější
+					if (protocolDictionary[(String)portBox.SelectedValue].SendDec(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější
 					{
 						MessageBox.Show("opravit");
 					}
 				}
 				else if (radioArray[2].IsChecked == true)
 				{
-					protocolArray[0].SendBin(boxChanged, Array.IndexOf(textBoxArray, boxChanged));
+					protocolDictionary[(String)portBox.SelectedValue].SendBin(boxChanged, Array.IndexOf(textBoxArray, boxChanged));
 				}
 				//testBtn.Background = new SolidColorBrush(Color.FromArgb(protocolArray[0].toSend[1], protocolArray[0].toSend[2], protocolArray[0].toSend[3], protocolArray[0].toSend[4]));
 			}
