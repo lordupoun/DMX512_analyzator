@@ -78,6 +78,17 @@ namespace DMX512_analyzator
 			else*/
 				return toSend[index];
 		}
+		public byte[] getToSend()
+		{
+			/*if (toSend[index] == null)
+				return 0;
+			else*/
+			return toSend;
+		}
+		public bool getLoop()
+		{
+			return loop;
+		}
 	}
 }
 //metody třídy prostředí budou vyžadovat číslo portu a podle toho se bude využívat instance
