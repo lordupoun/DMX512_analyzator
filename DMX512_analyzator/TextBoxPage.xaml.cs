@@ -40,9 +40,11 @@ namespace DMX512_analyzator
 		}
 		private void text_changed(object sender, TextChangedEventArgs e) //<- data na odeslání při změně textu
 		{
-			TextBox boxChanged = (TextBox)sender;
+			
 			if (windowLoaded == true)//zabrani padu - pak odstranit
 			{
+				MessageBox.Show("box změněn");
+				TextBox boxChanged = (TextBox)sender;
 				if (radioArray[0].IsChecked == true) //------------tyhle řádky by nemusely být duplicitně //-----------------------------Přehodit do jiné třídy
 				{
 					if (protocolDictionary[(String)portBox.SelectedValue].SendHex(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //když bude celá metoda pryč, nemůžu přistupovat k TextBoxArray, když jen část, nemůžu ji sdílet...
