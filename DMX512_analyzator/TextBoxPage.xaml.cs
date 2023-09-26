@@ -41,9 +41,9 @@ namespace DMX512_analyzator
 		private void text_changed(object sender, TextChangedEventArgs e) //<- data na odeslání při změně textu
 		{
 			
-			if (windowLoaded == true)//zabrani padu - pak odstranit
+			if (windowLoaded == true)//zabrani padu - pak odstranit //a if readOnly=false
 			{
-				MessageBox.Show("box změněn");
+				//MessageBox.Show("box změněn");
 				TextBox boxChanged = (TextBox)sender;
 				if (radioArray[0].IsChecked == true) //------------tyhle řádky by nemusely být duplicitně //-----------------------------Přehodit do jiné třídy
 				{
@@ -128,3 +128,4 @@ namespace DMX512_analyzator
 		}
 	}
 }
+//je vhodné přepisovat buňky? teď to funguje tak, že při změně režimu se přepíše obsah textBoxů do toSend, i přesto, že jsou tam shodný hodnoty

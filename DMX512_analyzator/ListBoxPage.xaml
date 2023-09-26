@@ -9,7 +9,7 @@
       Title="ListBoxPage">
 
     <Grid>
-        <ScrollBar x:Name="ScrollBarA" HorizontalAlignment="Left" Margin="168,56,0,0" VerticalAlignment="Top" Maximum="513" SmallChange="1" ValueChanged="ScrollBar_ValueChanged" KeyUp="ScrollBarA_KeyUp" KeyDown="ScrollBarA_KeyDown"/>
+        <ScrollBar x:Name="ScrollBarA" HorizontalAlignment="Left" Margin="168,56,0,0" VerticalAlignment="Top" Maximum="513" SmallChange="1" ValueChanged="ScrollBar_ValueChanged" KeyUp="ScrollBarA_KeyDown" KeyDown="ScrollBarA_KeyUp"/>
         <TextBox x:Name="textBoxA" HorizontalAlignment="Left" Margin="48,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="textBoxA_TextChanged" Text="0" Height="33"/>
         <TextBox x:Name="textBoxB" HorizontalAlignment="Left" Margin="259,56,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" Height="33"/>
         <Button Content="Potvrdit" HorizontalAlignment="Left" Margin="424,63,0,0" VerticalAlignment="Top" Click="Button_Click" Width="61"/>

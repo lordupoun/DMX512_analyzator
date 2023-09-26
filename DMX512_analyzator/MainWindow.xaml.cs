@@ -26,7 +26,9 @@ using System.ComponentModel;
  * Najít a vymazat
  * ----Nebudou komunikovat stránka se stránkou ale stránky s třídou API (Víc COM by se vždy posílal argument, kterého se to týká) -> Hotovo - předávají si informace v přetížení
  * ----Přidat podporu více COM - mrknout na volný COM porty do systému
- * Přidat features - přebírání hodnot v designech - načtení hodnot pro příslušnej COM a design, konverze hodnot
+ * ---Přidat features - přebírání hodnot v designech - načtení hodnot pro příslušnej COM a design, konverze hodnot
+ * Čtení
+ * To co je v konstruktoru přepsat do setterů
  * Tab pro textboxpage ...
  * Opravit ListBox Page +1
  * ---Původní Layout hodit jako Page, tlačítka nechat v rámci Window - někde k tomu mám komentář
@@ -75,6 +77,7 @@ namespace DMX512_analyzator
 			}
 			windowLoaded = true;
 			textBoxPage = new TextBoxPage(protocolDictionary, radioArray, portBox);
+			listBoxPage = new ListBoxPage(protocolDictionary, radioArray, portBox);
 			mainFrame.Navigate(textBoxPage);
 		}
 
@@ -91,11 +94,6 @@ namespace DMX512_analyzator
 			protocolDictionary[(String)portBox.SelectedValue].Stop(); //setter
 			buttonStart.IsEnabled = true;
 			buttonStop.IsEnabled = false;
-		}
-
-		public void setDataToSend() 
-		{
-
 		}
 
 		private void test_Click(object sender, RoutedEventArgs e) 
@@ -125,13 +123,17 @@ namespace DMX512_analyzator
 			//textBoxPage.Refresh();
 			//format = 1;
 			if(windowLoaded==true)
+			{ 
 				textBoxPage.Refresh();
+			listBoxPage.Refresh();
+			}
 			//mainFrame.Navigate.setFormat(1);<-----------------------------------------Tohle musím opravit...
 		}
 
 		private void radioBin_Checked(object sender, RoutedEventArgs e)
 		{
 				textBoxPage.Refresh();
+			listBoxPage.Refresh();
 			//format = 3;
 			/*if (windowLoaded == true)
 				refreshContent();*/
@@ -139,7 +141,8 @@ namespace DMX512_analyzator
 
 		private void radioDec_Checked(object sender, RoutedEventArgs e)
 		{
-			textBoxPage.Refresh(); //doifovat
+			textBoxPage.Refresh(); //doifovat <-- Pokud je zapnutá stránka -> refrehsnout to či ono
+			listBoxPage.Refresh();
 			//format = 2;
 			/*if (windowLoaded == true)
 				refreshContent();*/
@@ -178,24 +181,10 @@ namespace DMX512_analyzator
 						buttonStop.IsEnabled = false;
 					}
 				textBoxPage.Refresh();
+				listBoxPage.Refresh();
 			}
-			//test = false;
 		}
-		void refreshContent() //kvůli eventu změna COM portu a změna rádia, kterej je dovolatelnej pouze odsud
-		{
-			/*//radioBoxy
-			//Aktuální stránku
-			//Aktuální port
-			switch(currentPage)
-			{
-				case 1:
-					mainFrame.Navigate(new TextBoxPage(protocolDictionary, radioArray, portBox));
-					break;
-				case 2:
-					mainFrame.Navigate(new ListBoxPage(protocolDictionary, radioArray, portBox));
-					break;
-			}*/
-		}
+
 	}
     
 }
