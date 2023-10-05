@@ -113,8 +113,9 @@ namespace DMX512_analyzator
 
 		private void ChangeToTextBoxPage(object sender, RoutedEventArgs e)
 		{
-			
-			mainFrame.Navigate(textBoxPage); 
+			//textBoxPage = new TextBoxPage(protocolDictionary, radioArray, portBox);
+			mainFrame.Navigate(textBoxPage);
+			textBoxPage.Refresh();
 			//currentPage = 1;
 		}
 
