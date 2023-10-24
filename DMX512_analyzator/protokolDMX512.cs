@@ -26,10 +26,12 @@ namespace DMX512_analyzator
 		}
 		private async Task Send()
 		{
-			sp.BreakState = true;
+			sp.Write(toSend, 0, toSend.Length);
+			await Task.Delay(30); //přidat režim kompatibility -> 1ms pro FTDI; 30ms pro ostatní
+			sp.BreakState = true; //dřív než pošle, přepíše??
 			await Task.Delay(1); //30 aby to fungovalo i pro další převodníky//lze použít i timer
 			sp.BreakState = false;
-			sp.Write(toSend, 0, toSend.Length); //------------------- Mohlo by být await na Write Zde najdou uplatnění zejména IO bound operace, které nám pomohou snížit počet vláken v aplikaci. V případě tohoto typu operací není žádná činnost prováděna na dalším vlákně vaší aplikace, ale čeká se na odpověď jiného systému (např. databáze).                
+			 //------------------- Mohlo by být await na Write Zde najdou uplatnění zejména IO bound operace, které nám pomohou snížit počet vláken v aplikaci. V případě tohoto typu operací není žádná činnost prováděna na dalším vlákně vaší aplikace, ale čeká se na odpověď jiného systému (např. databáze).                
 		}
 		public async Task Start()
 		{

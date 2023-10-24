@@ -76,7 +76,7 @@ namespace DMX512_analyzator
 				MessageBox.Show("Zapojte prosím analyzátor do USB.");				
 			}
 			windowLoaded = true;
-			textBoxPage = new TextBoxPage(protocolDictionary, radioArray, portBox);
+			textBoxPage = new TextBoxPage(protocolDictionary, radioArray, portBox); //předat jako ref...
 			listBoxPage = new ListBoxPage(protocolDictionary, radioArray, portBox);
 			mainFrame.Navigate(textBoxPage);
 		}
@@ -123,7 +123,7 @@ namespace DMX512_analyzator
 		{
 			//textBoxPage.Refresh();
 			//format = 1;
-			if(windowLoaded==true)
+			if(windowLoaded==true) //pro default only...
 			{ 
 				textBoxPage.Refresh();
 			listBoxPage.Refresh();
