@@ -5,42 +5,109 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:DMX512_analyzator"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="TextBoxPage">
+      d:DesignHeight="450"
+      Title="TextBoxPage" Width="568">
 
-    <Grid x:Name="mainGrid">
-        <TextBox x:Name="textBox0" HorizontalAlignment="Left" Margin="10,13,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Margin="72,13,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox2" HorizontalAlignment="Left" Margin="134,13,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox3" HorizontalAlignment="Left" Margin="196,13,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox4" HorizontalAlignment="Left" Margin="258,13,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox5" HorizontalAlignment="Left" Margin="320,13,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox6" HorizontalAlignment="Left" Margin="382,13,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox7" HorizontalAlignment="Left" Margin="444,13,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox8" HorizontalAlignment="Left" Margin="506,13,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="21" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox9" HorizontalAlignment="Left" Margin="72,40,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox10" HorizontalAlignment="Left" Margin="134,40,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox11" HorizontalAlignment="Left" Margin="196,40,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox12" HorizontalAlignment="Left" Margin="258,40,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox13" HorizontalAlignment="Left" Margin="320,40,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox14" HorizontalAlignment="Left" Margin="382,40,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox15" HorizontalAlignment="Left" Margin="444,40,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox16" HorizontalAlignment="Left" Margin="506,40,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox17" HorizontalAlignment="Left" Margin="72,70,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox18" HorizontalAlignment="Left" Margin="134,70,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox19" HorizontalAlignment="Left" Margin="196,70,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox20" HorizontalAlignment="Left" Margin="258,70,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox21" HorizontalAlignment="Left" Margin="320,70,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox22" HorizontalAlignment="Left" Margin="382,70,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox23" HorizontalAlignment="Left" Margin="444,70,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox24" HorizontalAlignment="Left" Margin="506,70,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox25" HorizontalAlignment="Left" Margin="72,98,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox26" HorizontalAlignment="Left" Margin="134,98,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox27" HorizontalAlignment="Left" Margin="196,98,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox28" HorizontalAlignment="Left" Margin="258,98,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox29" HorizontalAlignment="Left" Margin="320,98,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox30" HorizontalAlignment="Left" Margin="382,98,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox31" HorizontalAlignment="Left" Margin="444,98,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
-        <TextBox x:Name="textBox32" HorizontalAlignment="Left" Margin="506,98,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="57" Height="22" TextChanged="text_changed"/>
+    <Grid x:Name="mainGrid" HorizontalAlignment="Left" Width="562">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="65"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="60"/>
+
+        </Grid.ColumnDefinitions>
+        <Label x:Name="l9" HorizontalAlignment="Right" VerticalAlignment="Center" Width="40" Height="25" Grid.Row="2" Grid.Column="1" Content="9-16"/>
+        <Label x:Name="l17" HorizontalAlignment="Right" VerticalAlignment="Center" Width="40" Height="25" Grid.Row="3" Grid.Column="1" Content="17-24"/>
+        <Label x:Name="l25" HorizontalAlignment="Right" VerticalAlignment="Center" Width="40" Height="25" Grid.Row="4" Grid.Column="1" Content="25-32"/>
+        <Label x:Name="l33" HorizontalAlignment="Right" VerticalAlignment="Center" Width="40" Height="25" Grid.Row="5" Grid.Column="1" Content="33-40"/>
+        <Label x:Name="l41" HorizontalAlignment="Right" VerticalAlignment="Center" Width="40" Height="25" Grid.Row="6" Grid.Column="1" Content="41-48"/>
+        <Label x:Name="l49" HorizontalAlignment="Right" VerticalAlignment="Center" Width="40" Height="25" Grid.Row="7" Grid.Column="1" Content="49-56"/>
+        <Label x:Name="l57" HorizontalAlignment="Right" VerticalAlignment="Center" Width="40" Height="25" Grid.Row="8" Grid.Column="1" Content="57-64"/>
+        <TextBox x:Name="textBox0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="1" Grid.Column="1" ToolTip="Start code - 0x00 pro ovládání scénické techniky"/>
+        <TextBox x:Name="textBox1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="1" Grid.Column="2"/>
+        <TextBox x:Name="textBox2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="1" Grid.Column="3"/>
+        <TextBox x:Name="textBox3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="1" Grid.Column="4"/>
+        <TextBox x:Name="textBox4" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="1" Grid.Column="5"/>
+        <TextBox x:Name="textBox5" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="1" Grid.Column="6"/>
+        <TextBox x:Name="textBox6" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="1" Grid.Column="7"/>
+        <TextBox x:Name="textBox7" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="1" Grid.Column="8"/>
+        <TextBox x:Name="textBox8" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="1" Grid.Column="9"/>
+        <TextBox x:Name="textBox9" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="2" Grid.Column="2"/>
+        <TextBox x:Name="textBox10" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="2" Grid.Column="3"/>
+        <TextBox x:Name="textBox11" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="2" Grid.Column="4"/>
+        <TextBox x:Name="textBox12" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="2" Grid.Column="5"/>
+        <TextBox x:Name="textBox13" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="2" Grid.Column="6"/>
+        <TextBox x:Name="textBox14" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="2" Grid.Column="7"/>
+        <TextBox x:Name="textBox15" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="2" Grid.Column="8"/>
+        <TextBox x:Name="textBox16" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="2" Grid.Column="9"/>
+        <TextBox x:Name="textBox17" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="3" Grid.Column="2"/>
+        <TextBox x:Name="textBox18" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="3" Grid.Column="3"/>
+        <TextBox x:Name="textBox19" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="3" Grid.Column="4"/>
+        <TextBox x:Name="textBox20" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="3" Grid.Column="5"/>
+        <TextBox x:Name="textBox21" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="3" Grid.Column="6"/>
+        <TextBox x:Name="textBox22" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="3" Grid.Column="7"/>
+        <TextBox x:Name="textBox23" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="3" Grid.Column="8"/>
+        <TextBox x:Name="textBox24" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="3" Grid.Column="9"/>
+        <TextBox x:Name="textBox25" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="4" Grid.Column="2"/>
+        <TextBox x:Name="textBox26" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="4" Grid.Column="3"/>
+        <TextBox x:Name="textBox27" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="4" Grid.Column="4"/>
+        <TextBox x:Name="textBox28" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="4" Grid.Column="5"/>
+        <TextBox x:Name="textBox29" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="4" Grid.Column="6"/>
+        <TextBox x:Name="textBox30" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="4" Grid.Column="7"/>
+        <TextBox x:Name="textBox31" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="4" Grid.Column="8"/>
+        <TextBox x:Name="textBox32" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="4" Grid.Column="9"/>
+        <TextBox x:Name="textBox33" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="5" Grid.Column="2"/>
+        <TextBox x:Name="textBox34" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="5" Grid.Column="3"/>
+        <TextBox x:Name="textBox35" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="5" Grid.Column="4"/>
+        <TextBox x:Name="textBox36" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="5" Grid.Column="5"/>
+        <TextBox x:Name="textBox37" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="5" Grid.Column="6"/>
+        <TextBox x:Name="textBox38" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="5" Grid.Column="7"/>
+        <TextBox x:Name="textBox39" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="5" Grid.Column="8"/>
+        <TextBox x:Name="textBox40" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="5" Grid.Column="9"/>
+        <TextBox x:Name="textBox41" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="6" Grid.Column="2"/>
+        <TextBox x:Name="textBox42" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="6" Grid.Column="3"/>
+        <TextBox x:Name="textBox43" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="6" Grid.Column="4"/>
+        <TextBox x:Name="textBox44" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="6" Grid.Column="5"/>
+        <TextBox x:Name="textBox45" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="6" Grid.Column="6"/>
+        <TextBox x:Name="textBox46" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="6" Grid.Column="7"/>
+        <TextBox x:Name="textBox47" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="6" Grid.Column="8"/>
+        <TextBox x:Name="textBox48" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="6" Grid.Column="9"/>
+        <TextBox x:Name="textBox49" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="7" Grid.Column="2"/>
+        <TextBox x:Name="textBox50" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="7" Grid.Column="3"/>
+        <TextBox x:Name="textBox51" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="7" Grid.Column="4"/>
+        <TextBox x:Name="textBox52" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="7" Grid.Column="5"/>
+        <TextBox x:Name="textBox53" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="7" Grid.Column="6"/>
+        <TextBox x:Name="textBox54" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="7" Grid.Column="7"/>
+        <TextBox x:Name="textBox55" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="7" Grid.Column="8"/>
+        <TextBox x:Name="textBox56" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="7" Grid.Column="9"/>
+        <TextBox x:Name="textBox57" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="8" Grid.Column="2"/>
+        <TextBox x:Name="textBox58" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="8" Grid.Column="3"/>
+        <TextBox x:Name="textBox59" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="8" Grid.Column="4"/>
+        <TextBox x:Name="textBox60" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="8" Grid.Column="5"/>
+        <TextBox x:Name="textBox61" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="8" Grid.Column="6"/>
+        <TextBox x:Name="textBox62" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="8" Grid.Column="7"/>
+        <TextBox x:Name="textBox63" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="8" Grid.Column="8"/>
+        <TextBox x:Name="textBox64" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="57" Height="22" TextChanged="text_changed" Grid.Row="8" Grid.Column="9"/>
+
+
+
     </Grid>
 </Page>

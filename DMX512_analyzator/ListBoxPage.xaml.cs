@@ -27,19 +27,35 @@ namespace DMX512_analyzator
 		int format;
 		Protocol[] protocolArray = new Protocol[256];
 		private RadioButton[] radioArray;
-		Dictionary<string, Protocol> protocolDictionary = new Dictionary<String, Protocol>();
-		private ComboBox portBox;
-		public ListBoxPage(Dictionary<String, Protocol> protocolDictionary, RadioButton[] radioArray, ComboBox portBox)
+		Dictionary<string, ProtocolSend> protocolSendDictionary = new Dictionary<String, ProtocolSend>();
+        Dictionary<string, ProtocolReceive> protocolReceiveDictionary = new Dictionary<String, ProtocolReceive>();
+        //private String selectedPort;
+		//private byte selectedFunction;
+        public String SelectedPort { get; set; } //Musí být zde, protože instance je založené ve třídě
+        public byte SelectedFunction { get; set; } //ref to nejde jednoduše udělat
+        public ListBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port,byte function)
 		{
-			this.protocolDictionary = protocolDictionary;
-			this.radioArray = radioArray;
-			this.portBox = portBox;
+			this.protocolSendDictionary = protocolSendDictionary;
+            this.protocolReceiveDictionary = protocolReceiveDictionary;
+            this.radioArray = radioArray;
+			this.SelectedPort = port;
+			SelectedFunction = function;
 			InitializeComponent();
 			ready = true;
 			//var mainWindow = (MainWindow)Application.Current.MainWindow;
 		}
+        public ListBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port)
+        {
+            this.protocolSendDictionary = protocolSendDictionary;
+            this.protocolReceiveDictionary = protocolReceiveDictionary;
+            this.radioArray = radioArray;
+            this.SelectedPort = port;
+            InitializeComponent();
+            ready = true;
+            //var mainWindow = (MainWindow)Application.Current.MainWindow;
+        }
 
-		private void ScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void ScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
 			textBoxA.Text = Convert.ToString(ScrollBarA.Value);
 		}
@@ -57,7 +73,9 @@ namespace DMX512_analyzator
 		private void textBoxA_TextChanged(object sender, TextChangedEventArgs e) //vymyslet jak to bude fungovat když bude zaškrtlej radioBox
 		{
 			ScrollBarA.Value = (int.Parse(textBoxA.Text));
-			TextBox boxChanged = (TextBox)sender;
+			//int.TryParse(textBoxA.Text, ScrollBarA.Value);
+
+            TextBox boxChanged = (TextBox)sender;
 			/*if (byte.TryParse(boxChanged.Text, NumberStyles.HexNumber, null, out device1.toSend[ScrollBarA.Value]) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější
             {
                 MessageBox.Show("opravit");
@@ -71,20 +89,37 @@ namespace DMX512_analyzator
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
+			if (SelectedFunction == 1)
+			{ 
 			if (radioArray[0].IsChecked == true)
 			{
-				protocolDictionary[(String)portBox.SelectedValue].SendHex(textBoxB, int.Parse(textBoxA.Text));
+				protocolSendDictionary[SelectedPort].SendHex(textBoxB, int.Parse(textBoxA.Text));
 			}
 			else if (radioArray[1].IsChecked == true)
 			{
-				protocolDictionary[(String)portBox.SelectedValue].SendDec(textBoxB, int.Parse(textBoxA.Text));
+				protocolSendDictionary[SelectedPort].SendDec(textBoxB, int.Parse(textBoxA.Text));
 			}
 			else if (radioArray[2].IsChecked == true)
 			{
-				protocolDictionary[(String)portBox.SelectedValue].SendBin(textBoxB, int.Parse(textBoxA.Text));
+				protocolSendDictionary[SelectedPort].SendBin(textBoxB, int.Parse(textBoxA.Text));
 			}
-
 		}
+			/*if (selectedFunction == 1)
+			{
+				if (radioArray[0].IsChecked == true)
+				{
+					protocolSendDictionary[SelectedPort].SendHex(textBoxB, int.Parse(textBoxA.Text));
+				}
+				else if (radioArray[1].IsChecked == true)
+				{
+					protocolSendDictionary[SelectedPort].SendDec(textBoxB, int.Parse(textBoxA.Text));
+				}
+				else if (radioArray[2].IsChecked == true)
+				{
+					protocolSendDictionary[SelectedPort].SendBin(textBoxB, int.Parse(textBoxA.Text));
+				}
+			}*/
+            }
 		public void setFormat(int format)
 		{
 			this.format = format;
@@ -116,18 +151,36 @@ namespace DMX512_analyzator
 		}
 		public void Refresh()
 		{
-			if (radioArray[0].IsChecked == true)
+			if (SelectedFunction == 1)
+			{
+				if (radioArray[0].IsChecked == true)
 				{
-					textBoxB.Text = Convert.ToString(protocolDictionary[(String)portBox.SelectedValue].getToSendValue(int.Parse(textBoxA.Text)), 16);
+					textBoxB.Text = Convert.ToString(protocolSendDictionary[SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 16);
 				}
 				if (radioArray[1].IsChecked == true)
 				{
-					textBoxB.Text = Convert.ToString(protocolDictionary[(String)portBox.SelectedValue].getToSendValue(int.Parse(textBoxA.Text)));
+					textBoxB.Text = Convert.ToString(protocolSendDictionary[SelectedPort].getToSendValue(int.Parse(textBoxA.Text)));
 				}
 				if (radioArray[2].IsChecked == true)
 				{
-					textBoxB.Text = Convert.ToString(protocolDictionary[(String)portBox.SelectedValue].getToSendValue(int.Parse(textBoxA.Text)), 2);
+					textBoxB.Text = Convert.ToString(protocolSendDictionary[SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 2);
 				}
-		}
+			}
+            if (SelectedFunction == 0)
+            {
+                if (radioArray[0].IsChecked == true)
+                {
+                    textBoxB.Text = Convert.ToString(protocolReceiveDictionary[SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 16);
+                }
+                if (radioArray[1].IsChecked == true)
+                {
+                    textBoxB.Text = Convert.ToString(protocolReceiveDictionary[SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)));
+                }
+                if (radioArray[2].IsChecked == true)
+                {
+                    textBoxB.Text = Convert.ToString(protocolReceiveDictionary[SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 2);
+                }
+            }
+        }
 	}
 }

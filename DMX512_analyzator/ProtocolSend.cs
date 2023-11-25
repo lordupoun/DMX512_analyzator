@@ -10,19 +10,19 @@ using System.Windows;
 
 namespace DMX512_analyzator
 {
-	public class Protocol
+	public class ProtocolSend : Protocol
 	{
 		public byte[] toSend = new byte[513]; //Buď můžu editovat tenhle byte, nebo dávat byte do metody Send //zanechat private a dát setter
-		private bool loop; //do konstruktoru přidat COM port atd.....
-		String port;
+		//private bool loop; //do konstruktoru přidat COM port atd.....
+		//String port;
 		SerialPort sp = new SerialPort();
-		public Protocol() //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)
+		public ProtocolSend() //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)
 		{
 
 		}
-		public Protocol(String port) //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)
+		public ProtocolSend(String port) //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)
 		{
-			this.port = port;
+            Port = port;
 		}
 		private async Task Send()
 		{
@@ -35,8 +35,8 @@ namespace DMX512_analyzator
 		}
 		public async Task Start()
 		{
-			loop = true;
-			sp.PortName = port; //Nastavení COM portu v rámci konstruktoru
+            Started = true;
+			sp.PortName = Port; //Nastavení COM portu v rámci konstruktoru
 			sp.BaudRate = 250000;
 			sp.Parity = Parity.None;
 			sp.DataBits = 8;
@@ -45,14 +45,14 @@ namespace DMX512_analyzator
 			sp.ReadTimeout = 500;
 			sp.WriteTimeout = 500;
 			sp.Open(); //přidat try catch pokud se neotevře
-			while (loop == true) //možná přidat do send
+			while (Started == true) //možná přidat do send
 			{
 				await Send();
 			}
 		}
 		public void Stop()
 		{
-			loop = false;
+            Started = false;
 			sp.Close();
 		}//Předělat BoxChanged na string
 		/// <summary>Odešle hexadecimální obsah textboxu jako byte s int číslem. Vrací true v případě úspěchu, false v případě neúspěchu.</summary>
@@ -80,17 +80,13 @@ namespace DMX512_analyzator
 			else*/
 				return toSend[index];
 		}
-		public byte[] getToSend()
+		/*public byte[] getToSend()
 		{
-			/*if (toSend[index] == null)
-				return 0;
-			else*/
+			//if (toSend[index] == null)
+			//	return 0;
+			//else
 			return toSend;
-		}
-		public bool getLoop()
-		{
-			return loop;
-		}
+		}*/
 	}
 }
 //metody třídy prostředí budou vyžadovat číslo portu a podle toho se bude využívat instance
