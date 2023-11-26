@@ -15,12 +15,19 @@ using System.Windows.Shapes;
 
 namespace DMX512_analyzator
 {
-	/// <summary>
-	/// Interaction logic for TextBoxPage.xaml
-	/// </summary>
-	public partial class TextBoxPage : Page
+    /// <summary>
+    /// Interaction logic for TextBoxPage.xaml
+    /// </summary>
+    /// 
+    public interface IBasePage
+    {
+        void Refresh();
+		void SetToReceive();
+		void SetToSend();
+	}
+	public partial class TextBoxPage : Page,IBasePage
 	{
-		bool windowLoaded;
+		bool pageLoaded;
 		int format;
 		private TextBox[] textBoxArray = new TextBox[513];
 		//private Protocol[] protocolArray = new Protocol[256];
@@ -39,7 +46,7 @@ namespace DMX512_analyzator
 			this.userSettings=userSettings; //musí se předávat takto? neviděla by na to ta třída i normálně? neviděla by tu instanci kde jsou hodnoty?
             InitializeComponent();
             textBoxArray = mainGrid.Children.OfType<TextBox>().Cast<TextBox>().ToArray(); //Castování kolekce textboxů na array
-            windowLoaded = true;
+            pageLoaded = true;
         }
         /*    public TextBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port, RadioButton[] radioFunctionArray)//vybranej port předat jako ref String, to samý radioButton ref int
 		{
@@ -53,10 +60,28 @@ namespace DMX512_analyzator
 			windowLoaded = true;
 			//Refresh();
 		}*/
-		private void text_changed(object sender, TextChangedEventArgs e) //Event změny textu v textboxu
+        public void SetToReceive()
+        {
+            for (int i = 0; i < textBoxArray.Length; i++)
+			{
+				textBoxArray[i].IsReadOnly = true;
+                textBoxArray[i].Background = Brushes.LightGray;
+                textBoxArray[i].Text = "0";
+            }
+        }
+        public void SetToSend()
+        {
+            for (int i = 0; i < textBoxArray.Length; i++)
+            {
+                textBoxArray[i].IsReadOnly = false;
+                textBoxArray[i].Background = Brushes.Transparent;
+            }
+			Refresh();
+        }
+        private void text_changed(object sender, TextChangedEventArgs e) //Event změny textu v textboxu
 		{
 			
-			if (windowLoaded == true&& userSettings.SelectedFunction == 1)//Zabraňuje pádu, TODO: Najít alternativu
+			if (pageLoaded == true&& userSettings.SelectedFunction == 1)//Zabraňuje pádu, TODO: Najít alternativu
 			{
 				//if (selectedFunction == 0)
 				//{
@@ -115,10 +140,12 @@ namespace DMX512_analyzator
                     //MessageBox.Show(Convert.ToString(userSettings.SelectedFunction));
                     /*String hexString = BitConverter.ToString(protocolDictionary[(String)portBox.SelectedValue].getToSend());
 					String[] hexStringArray = hexString.Split("-");*/
+                    MessageBox.Show(Convert.ToString(userSettings.SelectedPort));
+                    MessageBox.Show(Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(0), 16));
                     for (int i = 0; i < textBoxArray.Length; i++)
 					{
 						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(i), 16); //fixnout...
-					
+						//
 						//textBoxArray[i].Text = hexStringArray[i];					
 					}
 					//MessageBox.Show(SelectedPort);

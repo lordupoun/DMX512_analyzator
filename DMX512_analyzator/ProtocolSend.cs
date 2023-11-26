@@ -45,6 +45,8 @@ namespace DMX512_analyzator
 			sp.ReadTimeout = 500;
 			sp.WriteTimeout = 500;
 			sp.Open(); //přidat try catch pokud se neotevře
+			//for (int i = 0; i < toSend.Length; i++)
+			//	toSend[i] = 0;
 			while (Started == true) //možná přidat do send
 			{
 				await Send();

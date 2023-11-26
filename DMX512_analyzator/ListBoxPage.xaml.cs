@@ -21,25 +21,27 @@ namespace DMX512_analyzator
 	/// <summary>
 	/// Interaction logic for ListBoxPage.xaml
 	/// </summary>
-	public partial class ListBoxPage : Page
-	{
-		bool ready;
+	public partial class ListBoxPage : Page, IBasePage
+    {
+		bool pageLoaded;
 		int format;
-		Protocol[] protocolArray = new Protocol[256];
-		private RadioButton[] radioArray;
-        private RadioButton[] radioFunctionArray;
-        Dictionary<string, ProtocolSend> protocolSendDictionary = new Dictionary<String, ProtocolSend>();
-        Dictionary<string, ProtocolReceive> protocolReceiveDictionary = new Dictionary<String, ProtocolReceive>();
+		//Protocol[] protocolArray = new Protocol[256];
+		//private RadioButton[] radioArray;
+       // private RadioButton[] radioFunctionArray;
+        //Dictionary<string, ProtocolSend> protocolSendDictionary = new Dictionary<String, ProtocolSend>();
+        //Dictionary<string, ProtocolReceive> protocolReceiveDictionary = new Dictionary<String, ProtocolReceive>();
         //private String selectedPort;
 		//private byte selectedFunction;
-        public String SelectedPort { get; set; } //Musí být zde, protože instance je založené ve třídě
-        public byte SelectedFunction { get; set; } //ref to nejde jednoduše udělat
+        //public String SelectedPort { get; set; } //Musí být zde, protože instance je založené ve třídě
+        //public byte SelectedFunction { get; set; } //ref to nejde jednoduše udělat
         private UserSettings userSettings;
         public ListBoxPage(UserSettings userSettings)//vybranej port předat jako ref String, to samý radioButton ref int
         {
             this.userSettings = userSettings;
+            InitializeComponent();
+            pageLoaded = true;
         }
-        public ListBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port, RadioButton[] radioFunctionArray)
+        /*public ListBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port, RadioButton[] radioFunctionArray)
 		{
 			this.protocolSendDictionary = protocolSendDictionary;
             this.protocolReceiveDictionary = protocolReceiveDictionary;
@@ -60,7 +62,15 @@ namespace DMX512_analyzator
             ready = true;
             //var mainWindow = (MainWindow)Application.Current.MainWindow;
         }
-
+		*/
+		public void SetToReceive()
+		{
+			textBoxB.IsEnabled = false;
+		}
+		public void SetToSend()
+		{
+            textBoxB.IsEnabled = true;
+        }
         private void ScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
 			textBoxA.Text = Convert.ToString(ScrollBarA.Value);
@@ -87,7 +97,7 @@ namespace DMX512_analyzator
                 MessageBox.Show("opravit");
             }*/
 			//textBoxB.Text = Convert.ToString(protocolArray[0].getToSendValue(int.Parse(textBoxA.Text)));
-			if (ready == true)
+			if (pageLoaded == true)
 			{
 				Refresh();
 			}
@@ -95,19 +105,19 @@ namespace DMX512_analyzator
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			if (SelectedFunction == 1)
+			if (userSettings.SelectedFunction == 1)
 			{ 
-			if (radioArray[0].IsChecked == true)
+			if (userSettings.RadioArray[0].IsChecked == true)
 			{
-				protocolSendDictionary[SelectedPort].SendHex(textBoxB, int.Parse(textBoxA.Text));
+                    userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendHex(textBoxB, int.Parse(textBoxA.Text));
 			}
-			else if (radioArray[1].IsChecked == true)
+			else if (userSettings.RadioArray[1].IsChecked == true)
 			{
-				protocolSendDictionary[SelectedPort].SendDec(textBoxB, int.Parse(textBoxA.Text));
+                    userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendDec(textBoxB, int.Parse(textBoxA.Text));
 			}
-			else if (radioArray[2].IsChecked == true)
+			else if (userSettings.RadioArray[2].IsChecked == true)
 			{
-				protocolSendDictionary[SelectedPort].SendBin(textBoxB, int.Parse(textBoxA.Text));
+                    userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendBin(textBoxB, int.Parse(textBoxA.Text));
 			}
 		}
 			/*if (selectedFunction == 1)
@@ -157,34 +167,34 @@ namespace DMX512_analyzator
 		}
 		public void Refresh()
 		{
-			if (SelectedFunction == 1)
+			if (userSettings.SelectedFunction == 1)
 			{
-				if (radioArray[0].IsChecked == true)
+				if (userSettings.RadioArray[0].IsChecked == true)
 				{
-					textBoxB.Text = Convert.ToString(protocolSendDictionary[SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 16);
+					textBoxB.Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 16);
 				}
-				if (radioArray[1].IsChecked == true)
+				if (userSettings.RadioArray[1].IsChecked == true)
 				{
-					textBoxB.Text = Convert.ToString(protocolSendDictionary[SelectedPort].getToSendValue(int.Parse(textBoxA.Text)));
+					textBoxB.Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(int.Parse(textBoxA.Text)));
 				}
-				if (radioArray[2].IsChecked == true)
+				if (userSettings.RadioArray[2].IsChecked == true)
 				{
-					textBoxB.Text = Convert.ToString(protocolSendDictionary[SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 2);
+					textBoxB.Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 2);
 				}
 			}
-            if (SelectedFunction == 0)
+            if (userSettings.SelectedFunction == 0)
             {
-                if (radioArray[0].IsChecked == true)
+                if (userSettings.RadioArray[0].IsChecked == true)
                 {
-                    textBoxB.Text = Convert.ToString(protocolReceiveDictionary[SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 16);
+                    textBoxB.Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 16);
                 }
-                if (radioArray[1].IsChecked == true)
+                if (userSettings.RadioArray[1].IsChecked == true)
                 {
-                    textBoxB.Text = Convert.ToString(protocolReceiveDictionary[SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)));
+                    textBoxB.Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)));
                 }
-                if (radioArray[2].IsChecked == true)
+                if (userSettings.RadioArray[2].IsChecked == true)
                 {
-                    textBoxB.Text = Convert.ToString(protocolReceiveDictionary[SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 2);
+                    textBoxB.Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 2);
                 }
             }
         }

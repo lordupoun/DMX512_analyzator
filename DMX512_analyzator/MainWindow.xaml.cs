@@ -20,6 +20,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
+/**FAQ:
+ * Proč jsem na předávání použil objekt - protože třídy od WPF nejdou pořádně dědit a interface neumožňuje vložení proměnných (navíc i kdyby, byly by stále vázané k instanci)
+ * řekni si zda nepoužíváš if zbytečně!
+ * **/
 
 /**
  * ToDo:
@@ -42,19 +46,21 @@ using System.ComponentModel;
  * Pro případ Array -> Do array uchovávat Protocoly, hledat je podle čísla a předávat číslo, oboje obsahuje pouze reference; RAM vs CPU ------- u pole není potřeba trápit ani pamět ani CPU s dalšími operacemi, obzvlášť když přesně vím kolik paměti budu chtít (a není to moc, vzheldem k tomu, že je to reference) -> ale ARRAY způsob se vztahuje k názvu COM -> ale nemůžu hledat Contains(nějakej Protocol) -> na to by vlastně byla lepší Mapa
  * **/
 //příště možná postupovat po tlačítkách (pro jednotlivý eventy vytvořit tlačítka s funkcemi
+//Event je vlastně něco jako přerušení, nicméně přímo v kódu s vytvořeným GUI to tady nepotřebuju (Je to potřeba buď na uživatelskou reakci, nebo při dokončení něčeho na co se čeká)
 namespace DMX512_analyzator
 {   //UI běží na stejném vlákně jako kód
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public class UserSettings //Ideálěn Singleton obsahující všechna nastavení mainWindow -- spojuje stránky
+	public class UserSettings //Ideálěn Singleton obsahující všechna nastavení mainWindow -- spojuje stránky;; protože třídy z WPF nejdou jednoduše dědit (a stejně by to nešlo, protože bych musel měnit parametry dvou instancí najednou)
 	{
 		public Dictionary<string, ProtocolSend> ProtocolSendDictionary { get; set; } //TODO: Odebrat set
 		public Dictionary<string, ProtocolReceive> ProtocolReceiveDictionary { get; set; }
 		public RadioButton[] RadioArray { get; set; } //RadioFormatArray
-		public String SelectedPort { get; set; }
+		public String SelectedPort { get; set; } //TODO: Přidat otazníčky
 		public int SelectedFunction { get; set; }//když předám jako radioButtony, čas HW se prakticky neušetří, asi to můžu přehodit zpět tak jak to bylo, nebo naopak přehodit SelectedPort, aby vše bylo stejně - ale to pak bude všude psaný přidělování, který je ve vlastnostech objektu stejně už jednou přidělený
     }
+	
 	public partial class MainWindow : Window //Zachovat Window - v něm mít akorát tlačítka a přepínátka -> tlačítka Start Stop ovládají přímo Protocol class, informace o zaškrtlé volbě se bude přenášet spolu s COM portem v přetížení metody -> vliv na rychlost? asi žádný, informace o stavu radioButton bude uložená přímo v proměnné
 	{
 		//int format = 1; 
@@ -62,10 +68,11 @@ namespace DMX512_analyzator
 		bool windowLoaded = false;
 		RadioButton[] radioArray = new RadioButton[3];
         RadioButton[] radioFunctionArray = new RadioButton[3];
-        Dictionary<string, ProtocolSend> protocolSendDictionary = new Dictionary<String, ProtocolSend>();
+        Dictionary<string, ProtocolSend> protocolSendDictionary = new Dictionary<String, ProtocolSend>(); //TODO: Zrušit - může se nastavovat přímo
         Dictionary<string, ProtocolReceive> protocolReceiveDictionary = new Dictionary<String,ProtocolReceive>(); //odesílání - jeden aktivní port je pro odesílání i přijímání stejnej - nejdřív je povypínám a pak k Start tlačítku přidám podmínku, že jestli už je port otevřenej, tak ať pokračuje
         ListBoxPage listBoxPage;
 		TextBoxPage textBoxPage;
+		IBasePage CurrentPage;
         UserSettings userSettings = new UserSettings();
         public MainWindow()
 		{
@@ -82,6 +89,7 @@ namespace DMX512_analyzator
 			{
                 //protocolSendDictionary.Add((String)portBox.SelectedValue, new ProtocolSend((String)portBox.SelectedValue)); //vytvoří mapu otevřených prostředí  (otevřených COM portů)
                 protocolReceiveDictionary.Add((String)portBox.SelectedValue, new ProtocolReceive((String)portBox.SelectedValue)); //Warning: Default = Recieve, Change when changing default radioButton check Page neví jaká je aktuální hodnota // vytvoří se až se překlikne
+                protocolSendDictionary.Add((String)portBox.SelectedValue, new ProtocolSend((String)portBox.SelectedValue));
             }
 			catch
 			{
@@ -98,7 +106,10 @@ namespace DMX512_analyzator
 
             textBoxPage = new TextBoxPage(userSettings);
 			listBoxPage = new ListBoxPage(userSettings);
-            mainFrame.Navigate(textBoxPage);
+            mainFrame.Navigate(textBoxPage); //Default
+			CurrentPage = textBoxPage; //Default
+			CurrentPage.SetToReceive(); //Default
+
 			//MessageBox.Show((String)mainFrame.CurrentSource);
 		}
 
@@ -142,7 +153,8 @@ namespace DMX512_analyzator
 		private void ChangeToListBoxPage(object sender, RoutedEventArgs e) 
 		{ //zakomentoval jsem
 			//listBoxPage = new ListBoxPage(protocolSendDictionary, protocolReceiveDictionary , radioArray, (String)portBox.SelectedValue); //TODO: Destruktor; nakopírovat do funkce (aby nebyl vícekrát v kódu)
-			mainFrame.Navigate(listBoxPage); 
+			mainFrame.Navigate(listBoxPage);
+			CurrentPage =(IBasePage)listBoxPage; //Případně hodit jen proměnnou, ale to by zase potom nefungovalo potvrzování bez ifů (teoreticky by to mohl být jen string, ale to v syntaxi nejde, stejně by tam musel být if
 			//currentPage = 2;
 		}
 
@@ -150,39 +162,38 @@ namespace DMX512_analyzator
 		{
 			//textBoxPage = new TextBoxPage(protocolDictionary, radioArray, portBox);
 			mainFrame.Navigate(textBoxPage);
-			textBoxPage.Refresh();
-			//currentPage = 1;
-		}
+			CurrentPage = (IBasePage)textBoxPage;
+            CurrentPage.Refresh();
+            //currentPage = 1;
+        }
 
 		private void RadioHex_Checked(object sender, RoutedEventArgs e) //smazat
 		{
 			//textBoxPage.Refresh();
 			//format = 1;
 			if(windowLoaded==true) //pro default only...
-			{ 
-				textBoxPage.Refresh();
-				listBoxPage.Refresh();
-			}
+			{
+                CurrentPage.Refresh();
+            }
 			//mainFrame.Navigate.setFormat(1);<-----------------------------------------Tohle musím opravit...
 		}
 
 		private void radioBin_Checked(object sender, RoutedEventArgs e)
 		{
-			textBoxPage.Refresh();
-			listBoxPage.Refresh();
-			//format = 3;
-			/*if (windowLoaded == true)
+            CurrentPage.Refresh();
+            //format = 3;
+            /*if (windowLoaded == true)
 				refreshContent();*/
-		}
+        }
 
 		private void radioDec_Checked(object sender, RoutedEventArgs e)
 		{
-			textBoxPage.Refresh(); //doifovat <-- Pokud je zapnutá stránka -> refrehsnout to či ono
-			listBoxPage.Refresh();//EquippedPage.Refresh(); Page CurrentPage=textBoxPage - nejde musely by být extendnutý; RefreshCurrentPage() - kde jsou manuálně nadefinovaný, přidat Warning; mainFrame.Content otázka -> Frame.Source?; - šlo by to vyřešit přes CurrentSource ale switch bude jednoduší; ne switch
-			//format = 2;
-			/*if (windowLoaded == true)
+            //TODO: Přidat switch - aby se nepřepisovaly všechny layouty//doifovat <-- Pokud je zapnutá stránka -> refrehsnout to či ono
+            CurrentPage.Refresh();//EquippedPage.Refresh(); Page CurrentPage=textBoxPage - nejde musely by být extendnutý; RefreshCurrentPage() - kde jsou manuálně nadefinovaný, přidat Warning; mainFrame.Content otázka -> Frame.Source?; - šlo by to vyřešit přes CurrentSource ale switch bude jednoduší; ne switch
+                                  //format = 2;
+            /*if (windowLoaded == true)
 				refreshContent();*/
-		}
+        }
 
 		private void refreshButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -204,20 +215,19 @@ namespace DMX512_analyzator
 
             //Předá aktuálně zvolený port ostatním stránkám (layoutům); předává se pomocí property, protože String nelze předat referencí
             //Pozor! Musí být editováno pro všechny layouty
-            if (windowLoaded == true)
+            if (windowLoaded == true && portBox.SelectedValue != null)//Event se triggruje ještě když nemá Selcted Value, proto nesmí být null; 
             {
-            userSettings.SelectedPort = (String)portBox.SelectedValue;
+             userSettings.SelectedPort = (String)portBox.SelectedValue;
+                if (protocolSendDictionary.ContainsKey((String)portBox.SelectedValue) == false)
+                {
+                    protocolSendDictionary.Add((String)portBox.SelectedValue, new ProtocolSend((String)portBox.SelectedValue)); //Používat tohle---------------------------------------------------
+                    protocolReceiveDictionary.Add((String)portBox.SelectedValue, new ProtocolReceive((String)portBox.SelectedValue)); //Přidá port do obou, kvůli jednoduchosti, až později se řeší jestli odesílá nebo ne - při editaci můžou být stále použity oba                                                                                                  //MessageBox.Show((String)portBox.SelectedValue);//Tady to ještě funguje
+                }
 
-
-				if ((String)portBox.SelectedValue != null && radioSend.IsChecked == true)
+                if (radioSend.IsChecked == true) //Celé předělat do metod - třída function -> CurrentFunction.PortChange(); šel by vytvořit objekt userPropertiesSend a userPropertiesRecieve, který by měly definovaný metody pro funkci -> Ale to je BLBOST! Logiku tlačítek musím udělat tam kde jsou tlačítka
 				{
-				
-					if (protocolSendDictionary.ContainsKey((String)portBox.SelectedValue) == false)
-					{
-						userSettings.ProtocolSendDictionary.Add((String)portBox.SelectedValue, new ProtocolSend((String)portBox.SelectedValue)); //Používat tohle---------------------------------------------------
-                        MessageBox.Show((String)portBox.SelectedValue);//Tady to ještě funguje
-                    }
-					if (protocolSendDictionary[(String)portBox.SelectedValue].Started == true)
+									
+					if (protocolSendDictionary[(String)portBox.SelectedValue].Started == true)//TODO: ElseIf
 					{
 						buttonStart.IsEnabled = false;
 						buttonStop.IsEnabled = true;
@@ -227,15 +237,11 @@ namespace DMX512_analyzator
 						buttonStart.IsEnabled = true;
 						buttonStop.IsEnabled = false;
 					}
-					textBoxPage.Refresh();
-					listBoxPage.Refresh();
+                    
+                    
 				}
-				else if ((String)portBox.SelectedValue != null && radioReceive.IsChecked == true) //COM port není null
+				else if (radioReceive.IsChecked == true) //COM port není null
 				{
-					if (protocolReceiveDictionary.ContainsKey((String)portBox.SelectedValue) == false)
-					{
-						protocolReceiveDictionary.Add((String)portBox.SelectedValue, new ProtocolReceive((String)portBox.SelectedValue));
-					}
 					if (protocolReceiveDictionary[(String)portBox.SelectedValue].Started == true)
 					{
 						buttonStart.IsEnabled = false;
@@ -246,36 +252,53 @@ namespace DMX512_analyzator
 						buttonStart.IsEnabled = true;
 						buttonStop.IsEnabled = false;
 					}
-					textBoxPage.Refresh();
-					listBoxPage.Refresh();
-				}
+                    
+                }
+                CurrentPage.Refresh();
             }
         }
         private void radioSend_Checked(object sender, RoutedEventArgs e)
         {
 
             userSettings.SelectedFunction = 1;
-            protocolSendDictionary.Add((String)portBox.SelectedValue, new ProtocolSend((String)portBox.SelectedValue));//Defaultní funkce je Receive
+            CurrentPage.SetToSend();
+            //if (protocolSendDictionary.ContainsKey((String)portBox.SelectedValue) == false)
+            //{
+              //  userSettings.ProtocolSendDictionary.Add((String)portBox.SelectedValue, new ProtocolSend((String)portBox.SelectedValue)); //Používat tohle---------------------------------------------------
+                                                                                                                                         //MessageBox.Show((String)portBox.SelectedValue);//Tady to ještě funguje
+            //}
+            //Defaultní funkce je Receive
             foreach (ProtocolReceive running in protocolReceiveDictionary.Values)
 			{
 				running.Stop();
 			}
-			
+            buttonStart.IsEnabled = true;
+            buttonStop.IsEnabled = false;
         }
 
         private void radioRecieve_Checked(object sender, RoutedEventArgs e)
         {
 			if(windowLoaded==true)
 			{ 
-            userSettings.SelectedFunction = 0;
-            //textBoxPage.SelectedPort = (String)portBox.SelectedValue;
-            foreach (ProtocolSend running in protocolSendDictionary.Values)
+            userSettings.SelectedFunction = 0; //TODO: Vrátit na předávání jako WPF objekty; je vázáno k instanci, musím předávat objektem
+				//metoda zakázat textboxy
+				CurrentPage.SetToReceive();
+                //if (protocolReceiveDictionary.ContainsKey((String)portBox.SelectedValue) == false)
+               // {
+                //    protocolReceiveDictionary.Add((String)portBox.SelectedValue, new ProtocolReceive((String)portBox.SelectedValue));
+               // }
+                //currentlyUsedID.Lock() Místo textBoxPage.Lock
+                //textBoxPage.SelectedPort = (String)portBox.SelectedValue;
+                foreach (ProtocolSend running in protocolSendDictionary.Values)
             {
                 running.Stop();
             }
+                buttonStart.IsEnabled = true;
+                buttonStop.IsEnabled = false;
             }
         }
     }
+	//DALO BY SE!! ---- skladovat aktuálně uloženou stránku a pak 
     
 }
 //co kdyby měl založit class uživatel?
