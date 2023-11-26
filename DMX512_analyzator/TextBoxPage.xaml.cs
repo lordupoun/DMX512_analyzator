@@ -117,7 +117,7 @@ namespace DMX512_analyzator
 					String[] hexStringArray = hexString.Split("-");*/
                     for (int i = 0; i < textBoxArray.Length; i++)
 					{
-						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(i), 16); //fixnout
+						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(i), 16); //fixnout...
 					
 						//textBoxArray[i].Text = hexStringArray[i];					
 					}
