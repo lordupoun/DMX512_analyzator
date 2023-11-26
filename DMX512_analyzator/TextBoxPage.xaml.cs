@@ -78,6 +78,7 @@ namespace DMX512_analyzator
             }
 			Refresh();
         }
+		//Odešle data z textboxu na základě toho jaký je zvolený formát
         private void text_changed(object sender, TextChangedEventArgs e) //Event změny textu v textboxu
 		{
 			

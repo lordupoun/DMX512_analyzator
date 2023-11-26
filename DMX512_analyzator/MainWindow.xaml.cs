@@ -72,9 +72,11 @@ namespace DMX512_analyzator
         Dictionary<string, ProtocolReceive> protocolReceiveDictionary = new Dictionary<String,ProtocolReceive>(); //odesílání - jeden aktivní port je pro odesílání i přijímání stejnej - nejdřív je povypínám a pak k Start tlačítku přidám podmínku, že jestli už je port otevřenej, tak ať pokračuje
         ListBoxPage listBoxPage;
 		TextBoxPage textBoxPage;
-		IBasePage CurrentPage;
+		IBasePage CurrentPage; //Interface stránek (Page) - určuje právě otevřenou stránku
         UserSettings userSettings = new UserSettings();
-        public MainWindow()
+		//Měl bych instanci Receive a instanci Send - v nich metodu Function - když by se volalo Function volal bych jen SelectedInstance.Function - což by bylo buď Receive nebo Send, stejně jako u Current Page... ale pomohlo by mi to u ostatních CheckBoxů? NEPOMOHLO! Protože oni jsou posunutý ke konkrétní stránce, ve který se odehrává danej Event (text_Changed), protože ten se neodehrává v mainWindow
+        //Pokud ale bude SelectedInstance.Function tak program musí vědět co je SelectedInstance (+paměť) a když budu děla ify, jen někde jinde, tak si nepomůžu
+		public MainWindow()
 		{
 			
 			InitializeComponent();
