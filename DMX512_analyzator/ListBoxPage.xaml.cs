@@ -27,19 +27,25 @@ namespace DMX512_analyzator
 		int format;
 		Protocol[] protocolArray = new Protocol[256];
 		private RadioButton[] radioArray;
-		Dictionary<string, ProtocolSend> protocolSendDictionary = new Dictionary<String, ProtocolSend>();
+        private RadioButton[] radioFunctionArray;
+        Dictionary<string, ProtocolSend> protocolSendDictionary = new Dictionary<String, ProtocolSend>();
         Dictionary<string, ProtocolReceive> protocolReceiveDictionary = new Dictionary<String, ProtocolReceive>();
         //private String selectedPort;
 		//private byte selectedFunction;
         public String SelectedPort { get; set; } //Musí být zde, protože instance je založené ve třídě
         public byte SelectedFunction { get; set; } //ref to nejde jednoduše udělat
-        public ListBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port,byte function)
+        private UserSettings userSettings;
+        public ListBoxPage(UserSettings userSettings)//vybranej port předat jako ref String, to samý radioButton ref int
+        {
+            this.userSettings = userSettings;
+        }
+        public ListBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port, RadioButton[] radioFunctionArray)
 		{
 			this.protocolSendDictionary = protocolSendDictionary;
             this.protocolReceiveDictionary = protocolReceiveDictionary;
             this.radioArray = radioArray;
 			this.SelectedPort = port;
-			SelectedFunction = function;
+			this.radioFunctionArray = radioFunctionArray;
 			InitializeComponent();
 			ready = true;
 			//var mainWindow = (MainWindow)Application.Current.MainWindow;

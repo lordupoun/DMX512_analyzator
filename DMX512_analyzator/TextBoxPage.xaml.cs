@@ -23,53 +23,61 @@ namespace DMX512_analyzator
 		bool windowLoaded;
 		int format;
 		private TextBox[] textBoxArray = new TextBox[513];
-		private Protocol[] protocolArray = new Protocol[256];
-		private Dictionary<string, ProtocolSend> protocolSendDictionary = new Dictionary<String, ProtocolSend>(); //doufám že se předává odkazem
-        private Dictionary<string, ProtocolReceive> protocolReceiveDictionary = new Dictionary<String, ProtocolReceive>();
-        private RadioButton[] radioArray;
-        public String SelectedPort { get; set; }
-        public byte SelectedFunction { get; set; } //ref to nejde jednoduše udělat
+		//private Protocol[] protocolArray = new Protocol[256];
+		//private Dictionary<string, ProtocolSend> protocolSendDictionary = new Dictionary<String, ProtocolSend>(); //doufám že se předává odkazem
+        //private Dictionary<string, ProtocolReceive> protocolReceiveDictionary = new Dictionary<String, ProtocolReceive>();
+        //private RadioButton[] radioArray;
+        //private RadioButton[] radioFunctionArray;
+        //public String SelectedPort { get; set; }
+		private UserSettings userSettings;
+        //public byte SelectedFunction { get; set; } //ref to nejde jednoduše udělat
         //private String selectedPort; //Pro port se využívá String - vychází z koncepce pojmenovávání COM portů (více futureproof oproti číslům)
         TextBox boxChanged;
 
-
-        public TextBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port,byte function)//vybranej port předat jako ref String, to samý radioButton ref int
+		public TextBoxPage(UserSettings userSettings)//vybranej port předat jako ref String, to samý radioButton ref int
+		{
+			this.userSettings=userSettings; //musí se předávat takto? neviděla by na to ta třída i normálně? neviděla by tu instanci kde jsou hodnoty?
+            InitializeComponent();
+            textBoxArray = mainGrid.Children.OfType<TextBox>().Cast<TextBox>().ToArray(); //Castování kolekce textboxů na array
+            windowLoaded = true;
+        }
+        /*    public TextBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port, RadioButton[] radioFunctionArray)//vybranej port předat jako ref String, to samý radioButton ref int
 		{
 			this.protocolSendDictionary = protocolSendDictionary;
             this.protocolReceiveDictionary = protocolReceiveDictionary;
             this.radioArray = radioArray;
-			SelectedFunction = function;
+			this.radioFunctionArray = radioFunctionArray;
 			SelectedPort = port;
 			InitializeComponent();
 			textBoxArray = mainGrid.Children.OfType<TextBox>().Cast<TextBox>().ToArray(); //Castování kolekce textboxů na array
 			windowLoaded = true;
 			//Refresh();
-		}
+		}*/
 		private void text_changed(object sender, TextChangedEventArgs e) //Event změny textu v textboxu
 		{
 			
-			if (windowLoaded == true&& SelectedFunction == 1)//Zabraňuje pádu, TODO: Najít alternativu
+			if (windowLoaded == true&& userSettings.SelectedFunction == 1)//Zabraňuje pádu, TODO: Najít alternativu
 			{
 				//if (selectedFunction == 0)
 				//{
 					boxChanged = (TextBox)sender;
-					if (radioArray[0].IsChecked == true) //Hexadecimální; v případě problémů s výkonem, lze dosadit příme hodnoty místo portBox.SelectedVaulue castování(String) a dosazení do protocolDictionary a radioArray[0].IsChecked
+					if (userSettings.RadioArray[0].IsChecked == true) //Hexadecimální; v případě problémů s výkonem, lze dosadit příme hodnoty místo portBox.SelectedVaulue castování(String) a dosazení do protocolDictionary a radioArray[0].IsChecked
 					{
-						if (protocolSendDictionary[SelectedPort].SendHex(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //když bude celá metoda pryč, nemůžu přistupovat k TextBoxArray, když jen část, nemůžu ji sdílet...
+						if (userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendHex(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //když bude celá metoda pryč, nemůžu přistupovat k TextBoxArray, když jen část, nemůžu ji sdílet...
 						{
 							//Upozornění na chybnou hodnotu
 						}
 					}
-					else if (radioArray[1].IsChecked == true) //Decimální
+					else if (userSettings.RadioArray[1].IsChecked == true) //Decimální
 					{
-						if (protocolSendDictionary[SelectedPort].SendDec(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější (rychlejší)
+						if (userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendDec(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější (rychlejší)
 						{
 							//Upozornění na chybnou hodnotu
 						}
 					}
-					else if (radioArray[2].IsChecked == true) //Binární
+					else if (userSettings.RadioArray[2].IsChecked == true) //Binární
 					{
-						protocolSendDictionary[SelectedPort].SendBin(boxChanged, Array.IndexOf(textBoxArray, boxChanged));
+						userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendBin(boxChanged, Array.IndexOf(textBoxArray, boxChanged));
 					}
 				//}
 				/*else if (selectedFunction == 1)
@@ -100,64 +108,67 @@ namespace DMX512_analyzator
 		}
 		public void Refresh()
 		{
-			if(SelectedFunction==1)
+			if(userSettings.SelectedFunction==1)
 			{
-				if (radioArray[0].IsChecked == true)
+				if (userSettings.RadioArray[0].IsChecked == true)
 				{
-					/*String hexString = BitConverter.ToString(protocolDictionary[(String)portBox.SelectedValue].getToSend());
+                    //MessageBox.Show(Convert.ToString(userSettings.SelectedFunction));
+                    /*String hexString = BitConverter.ToString(protocolDictionary[(String)portBox.SelectedValue].getToSend());
 					String[] hexStringArray = hexString.Split("-");*/
-					for (int i = 0; i < textBoxArray.Length; i++)
+                    for (int i = 0; i < textBoxArray.Length; i++)
 					{
-						textBoxArray[i].Text = Convert.ToString(protocolSendDictionary[SelectedPort].getToSendValue(i), 16); //fixnout
+						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(i), 16); //fixnout
 					
 						//textBoxArray[i].Text = hexStringArray[i];					
 					}
 					//MessageBox.Show(SelectedPort);
 				}
-				if (radioArray[1].IsChecked == true)
+				if (userSettings.RadioArray[1].IsChecked == true)
 				{
 					for (int i = 0; i < textBoxArray.Length; i++)
 					{
-						textBoxArray[i].Text = Convert.ToString(protocolSendDictionary[SelectedPort].getToSendValue(i));
+						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(i));
 					
 					}
 				}
-				if (radioArray[2].IsChecked == true)
+				if (userSettings.RadioArray[2].IsChecked == true)
 				{
 					for (int i = 0; i < textBoxArray.Length; i++)
 					{
-						textBoxArray[i].Text = Convert.ToString(protocolSendDictionary[SelectedPort].getToSendValue(i), 2);
+						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(i), 2);
 
 					}
 				}
             }
-            else if (SelectedFunction == 0)
+            else if (userSettings.SelectedFunction == 0) //TODO: fungovalo by předání ref? tzn. int zadám do konstruktoru jako referenci a uložím do proměnné, čímž se mi tam drží stále ta samá hodnota jako pointer? ChatGPT říkal, že ne. - vytvoři třídu s konstruktorem, vložit tam ref int jako přetížení uložit ho do proměnné, vypsat, změnit proměnnou v předchozí třídě, znovu vypsat
 			{
-                if (radioArray[0].IsChecked == true)
+                if (userSettings.RadioArray[0].IsChecked == true)
                 {
                     /*String hexString = BitConverter.ToString(protocolDictionary[(String)portBox.SelectedValue].getToSend());
 					String[] hexStringArray = hexString.Split("-");*/
+                    MessageBox.Show(Convert.ToString(userSettings.SelectedFunction));
                     for (int i = 0; i < textBoxArray.Length; i++)
                     {
-                        textBoxArray[i].Text = Convert.ToString(protocolReceiveDictionary[SelectedPort].getReceivedValue(i), 16); //fixnout
+						
+                        textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(i), 16); //Sem to při odesílání nemá chodit
 
                         //textBoxArray[i].Text = hexStringArray[i];					
                     }
                     //MessageBox.Show(SelectedPort);
                 }
-                if (radioArray[1].IsChecked == true)
+                if (userSettings.RadioArray[1].IsChecked == true)
                 {
                     for (int i = 0; i < textBoxArray.Length; i++)
                     {
-                        textBoxArray[i].Text = Convert.ToString(protocolReceiveDictionary[SelectedPort].getReceivedValue(i));
+                        textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(i));
 
                     }
                 }
-                if (radioArray[2].IsChecked == true)
+                if (userSettings.RadioArray[2].IsChecked == true)
                 {
                     for (int i = 0; i < textBoxArray.Length; i++)
                     {
-                        textBoxArray[i].Text = Convert.ToString(protocolReceiveDictionary[SelectedPort].getReceivedValue(i), 2);
+                        textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(i), 2);
 
                     }
                 }

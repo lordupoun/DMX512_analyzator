@@ -12,6 +12,6 @@ namespace DMX512_analyzator
         //private String selectedPort = "";
         public String Port { get; set; }
 
-        //public pole dat "packet", i s jednotlivejma getterama a setterama
+        //public pole dat "packet", i s jednotlivejma getterama a setterama, není  ale tak nutný
     }
 }
