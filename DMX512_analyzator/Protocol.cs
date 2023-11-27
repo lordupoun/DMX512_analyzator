@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DMX512_analyzator
 {
-    public abstract class Protocol
+    public abstract class Protocol1
     {
-        public bool Started { get; set; }
+        //public bool Started { get; set; }
         //private String selectedPort = "";
-        public String Port { get; set; }
+        //public String Port { get; set; }
 
         //public pole dat "packet", i s jednotlivejma getterama a setterama, není  ale tak nutný
     }

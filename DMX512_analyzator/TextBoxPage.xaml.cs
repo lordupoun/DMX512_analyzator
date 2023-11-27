@@ -89,21 +89,21 @@ namespace DMX512_analyzator
 					boxChanged = (TextBox)sender;
 					if (userSettings.RadioArray[0].IsChecked == true) //Hexadecimální; v případě problémů s výkonem, lze dosadit příme hodnoty místo portBox.SelectedVaulue castování(String) a dosazení do protocolDictionary a radioArray[0].IsChecked
 					{
-						if (userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendHex(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //když bude celá metoda pryč, nemůžu přistupovat k TextBoxArray, když jen část, nemůžu ji sdílet...
+						if (userSettings.ProtocolDictionary[userSettings.SelectedPort].SendHex(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //když bude celá metoda pryč, nemůžu přistupovat k TextBoxArray, když jen část, nemůžu ji sdílet...
 						{
 							//Upozornění na chybnou hodnotu
 						}
 					}
 					else if (userSettings.RadioArray[1].IsChecked == true) //Decimální
 					{
-						if (userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendDec(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější (rychlejší)
+						if (userSettings.ProtocolDictionary[userSettings.SelectedPort].SendDec(boxChanged, Array.IndexOf(textBoxArray, boxChanged)) == false) //ošetření dělá Parse, v případě chyby vrátí nulu jako Convert jen je vhodnější (rychlejší)
 						{
 							//Upozornění na chybnou hodnotu
 						}
 					}
 					else if (userSettings.RadioArray[2].IsChecked == true) //Binární
 					{
-						userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendBin(boxChanged, Array.IndexOf(textBoxArray, boxChanged));
+						userSettings.ProtocolDictionary[userSettings.SelectedPort].SendBin(boxChanged, Array.IndexOf(textBoxArray, boxChanged));
 					}
 				//}
 				/*else if (selectedFunction == 1)
@@ -142,10 +142,10 @@ namespace DMX512_analyzator
                     /*String hexString = BitConverter.ToString(protocolDictionary[(String)portBox.SelectedValue].getToSend());
 					String[] hexStringArray = hexString.Split("-");*/
                     MessageBox.Show(Convert.ToString(userSettings.SelectedPort));
-                    MessageBox.Show(Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(0), 16));
+                    MessageBox.Show(Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(0), 16));
                     for (int i = 0; i < textBoxArray.Length; i++)
 					{
-						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(i), 16); //fixnout...
+						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(i), 16); //fixnout...
 						//
 						//textBoxArray[i].Text = hexStringArray[i];					
 					}
@@ -155,7 +155,7 @@ namespace DMX512_analyzator
 				{
 					for (int i = 0; i < textBoxArray.Length; i++)
 					{
-						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(i));
+						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(i));
 					
 					}
 				}
@@ -163,7 +163,7 @@ namespace DMX512_analyzator
 				{
 					for (int i = 0; i < textBoxArray.Length; i++)
 					{
-						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(i), 2);
+						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(i), 2);
 
 					}
 				}
@@ -178,7 +178,7 @@ namespace DMX512_analyzator
                     for (int i = 0; i < textBoxArray.Length; i++)
                     {
 						
-                        textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(i), 16); //Sem to při odesílání nemá chodit
+                        textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getReceivedValue(i), 16); //Sem to při odesílání nemá chodit
 
                         //textBoxArray[i].Text = hexStringArray[i];					
                     }
@@ -188,7 +188,7 @@ namespace DMX512_analyzator
                 {
                     for (int i = 0; i < textBoxArray.Length; i++)
                     {
-                        textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(i));
+                        textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getReceivedValue(i));
 
                     }
                 }
@@ -196,7 +196,7 @@ namespace DMX512_analyzator
                 {
                     for (int i = 0; i < textBoxArray.Length; i++)
                     {
-                        textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(i), 2);
+                        textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getReceivedValue(i), 2);
 
                     }
                 }

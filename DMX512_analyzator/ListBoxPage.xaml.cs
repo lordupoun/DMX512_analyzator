@@ -109,15 +109,15 @@ namespace DMX512_analyzator
 			{ 
 			if (userSettings.RadioArray[0].IsChecked == true)
 			{
-                    userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendHex(textBoxB, int.Parse(textBoxA.Text));
+                    userSettings.ProtocolDictionary[userSettings.SelectedPort].SendHex(textBoxB, int.Parse(textBoxA.Text));
 			}
 			else if (userSettings.RadioArray[1].IsChecked == true)
 			{
-                    userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendDec(textBoxB, int.Parse(textBoxA.Text));
+                    userSettings.ProtocolDictionary[userSettings.SelectedPort].SendDec(textBoxB, int.Parse(textBoxA.Text));
 			}
 			else if (userSettings.RadioArray[2].IsChecked == true)
 			{
-                    userSettings.ProtocolSendDictionary[userSettings.SelectedPort].SendBin(textBoxB, int.Parse(textBoxA.Text));
+                    userSettings.ProtocolDictionary[userSettings.SelectedPort].SendBin(textBoxB, int.Parse(textBoxA.Text));
 			}
 		}
 			/*if (selectedFunction == 1)
@@ -171,30 +171,30 @@ namespace DMX512_analyzator
 			{
 				if (userSettings.RadioArray[0].IsChecked == true)
 				{
-					textBoxB.Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 16);
+					textBoxB.Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 16);
 				}
 				if (userSettings.RadioArray[1].IsChecked == true)
 				{
-					textBoxB.Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(int.Parse(textBoxA.Text)));
+					textBoxB.Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(int.Parse(textBoxA.Text)));
 				}
 				if (userSettings.RadioArray[2].IsChecked == true)
 				{
-					textBoxB.Text = Convert.ToString(userSettings.ProtocolSendDictionary[userSettings.SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 2);
+					textBoxB.Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 2);
 				}
 			}
             if (userSettings.SelectedFunction == 0)
             {
                 if (userSettings.RadioArray[0].IsChecked == true)
                 {
-                    textBoxB.Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 16);
+                    textBoxB.Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 16);
                 }
                 if (userSettings.RadioArray[1].IsChecked == true)
                 {
-                    textBoxB.Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)));
+                    textBoxB.Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)));
                 }
                 if (userSettings.RadioArray[2].IsChecked == true)
                 {
-                    textBoxB.Text = Convert.ToString(userSettings.ProtocolReceiveDictionary[userSettings.SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 2);
+                    textBoxB.Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 2);
                 }
             }
         }

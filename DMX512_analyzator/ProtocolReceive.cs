@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace DMX512_analyzator //mohla by dědit společné atributy
 {
-    public class ProtocolReceive : Protocol
+    public class ProtocolReceive : Protocol1
     {
         public byte[] toReceive = new byte[513]; //Buď můžu editovat tenhle byte, nebo dávat byte do metody Send //zanechat private a dát setter
          //do konstruktoru přidat COM port atd.....
@@ -22,8 +22,8 @@ namespace DMX512_analyzator //mohla by dědit společné atributy
         }
         public ProtocolReceive(String port) //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)
         {
-            Started = false;
-            Port = port;
+            //Started = false;
+            //Port = port;
         }
         private async Task Receive()
         {
@@ -32,8 +32,8 @@ namespace DMX512_analyzator //mohla by dědit společné atributy
         }
         public async Task Start()
         {
-            Started = true;
-            sp.PortName = Port; //Nastavení COM portu v rámci konstruktoru
+            //Started = true;
+            //sp.PortName = Port; //Nastavení COM portu v rámci konstruktoru
             sp.BaudRate = 250000;
             sp.Parity = Parity.None;
             sp.DataBits = 8;
@@ -42,14 +42,14 @@ namespace DMX512_analyzator //mohla by dědit společné atributy
             sp.ReadTimeout = 500;
             sp.WriteTimeout = 500;
             sp.Open(); //přidat try catch pokud se neotevře
-            while (Started == true) //možná přidat do send
-            {
-                await Receive();
-            }
+            //while (Started == true) //možná přidat do send
+            //{
+            //    await Receive();
+            //}
         }
         public void Stop()
         {
-            Started = false;
+            //Started = false;
             sp.Close();
         }
         public byte getReceivedValue(int index)
