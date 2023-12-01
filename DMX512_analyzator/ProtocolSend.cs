@@ -21,7 +21,7 @@ namespace DMX512_analyzator
 		//private bool loop; //do konstruktoru přidat COM port atd.....
 		//String port;
 		SerialPort sp = new SerialPort();
-		//public Protocol() //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)
+		//public Protocol() //Zvolení portu vytvoří novou instanci (pokud ještě není vytvořena)...
 		//{
 		//
 		//}
