@@ -141,8 +141,8 @@ namespace DMX512_analyzator
                     //MessageBox.Show(Convert.ToString(userSettings.SelectedFunction));
                     /*String hexString = BitConverter.ToString(protocolDictionary[(String)portBox.SelectedValue].getToSend());
 					String[] hexStringArray = hexString.Split("-");*/
-                    MessageBox.Show(Convert.ToString(userSettings.SelectedPort));
-                    MessageBox.Show(Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(0), 16));
+                   // MessageBox.Show(Convert.ToString(userSettings.SelectedPort));
+                    //MessageBox.Show(Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(0), 16));
                     for (int i = 0; i < textBoxArray.Length; i++)
 					{
 						textBoxArray[i].Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(i), 16); //fixnout...
@@ -174,7 +174,7 @@ namespace DMX512_analyzator
                 {
                     /*String hexString = BitConverter.ToString(protocolDictionary[(String)portBox.SelectedValue].getToSend());
 					String[] hexStringArray = hexString.Split("-");*/
-                    MessageBox.Show(Convert.ToString(userSettings.SelectedFunction));
+                    //MessageBox.Show(Convert.ToString(userSettings.SelectedFunction));
                     for (int i = 0; i < textBoxArray.Length; i++)
                     {
 						

@@ -34,6 +34,7 @@ namespace DMX512_analyzator
 		}
 		private async Task Send()
 		{
+			//MessageBox.Show("test");
 			sp.Write(toSend, 0, toSend.Length);
 			await Task.Delay(30); //přidat režim kompatibility -> 1ms pro FTDI; 30ms pro ostatní
 			sp.BreakState = true; //dřív než pošle, přepíše??
@@ -57,7 +58,7 @@ namespace DMX512_analyzator
 				sp.WriteTimeout = 500;
 				sp.Open(); //přidat try catch pokud se neotevře
 			}
-			
+			Sending = true;
 			
 			//for (int i = 0; i < toSend.Length; i++)
 			//	toSend[i] = 0;

@@ -148,7 +148,7 @@ namespace DMX512_analyzator
 		{
 			foreach (String i in SerialPort.GetPortNames())
 			{
-				MessageBox.Show(i);
+				//MessageBox.Show(i);
 			}
 		}
 
@@ -157,6 +157,7 @@ namespace DMX512_analyzator
 			//listBoxPage = new ListBoxPage(protocolSendDictionary, protocolReceiveDictionary , radioArray, (String)portBox.SelectedValue); //TODO: Destruktor; nakopírovat do funkce (aby nebyl vícekrát v kódu)
 			mainFrame.Navigate(listBoxPage);
 			CurrentPage =(IBasePage)listBoxPage; //Případně hodit jen proměnnou, ale to by zase potom nefungovalo potvrzování bez ifů (teoreticky by to mohl být jen string, ale to v syntaxi nejde, stejně by tam musel být if
+			CurrentPage.Refresh();
 			//currentPage = 2;
 		}
 
@@ -164,7 +165,7 @@ namespace DMX512_analyzator
 		{
 			//textBoxPage = new TextBoxPage(protocolDictionary, radioArray, portBox);
 			mainFrame.Navigate(textBoxPage);
-			CurrentPage = (IBasePage)textBoxPage;
+			CurrentPage = (IBasePage)textBoxPage; //před tím jsem musel dávat každou zvlášť
             CurrentPage.Refresh();
             //currentPage = 1;
         }
