@@ -23,46 +23,15 @@ namespace DMX512_analyzator
 	/// </summary>
 	public partial class ListBoxPage : Page, IBasePage
     {
-		bool pageLoaded;
-		int format;
-		//Protocol[] protocolArray = new Protocol[256];
-		//private RadioButton[] radioArray;
-       // private RadioButton[] radioFunctionArray;
-        //Dictionary<string, ProtocolSend> protocolSendDictionary = new Dictionary<String, ProtocolSend>();
-        //Dictionary<string, ProtocolReceive> protocolReceiveDictionary = new Dictionary<String, ProtocolReceive>();
-        //private String selectedPort;
-		//private byte selectedFunction;
-        //public String SelectedPort { get; set; } //Musí být zde, protože instance je založené ve třídě
-        //public byte SelectedFunction { get; set; } //ref to nejde jednoduše udělat
+		bool pageLoaded;		
         private UserSettings userSettings;
-        public ListBoxPage(UserSettings userSettings)//vybranej port předat jako ref String, to samý radioButton ref int
+        public ListBoxPage(UserSettings userSettings)
         {
-            this.userSettings = userSettings;
+            this.userSettings = userSettings;//předá všechny informace z MainWindow
             InitializeComponent();
             pageLoaded = true;
         }
-        /*public ListBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port, RadioButton[] radioFunctionArray)
-		{
-			this.protocolSendDictionary = protocolSendDictionary;
-            this.protocolReceiveDictionary = protocolReceiveDictionary;
-            this.radioArray = radioArray;
-			this.SelectedPort = port;
-			this.radioFunctionArray = radioFunctionArray;
-			InitializeComponent();
-			ready = true;
-			//var mainWindow = (MainWindow)Application.Current.MainWindow;
-		}
-        public ListBoxPage(Dictionary<String, ProtocolSend> protocolSendDictionary, Dictionary<String, ProtocolReceive> protocolReceiveDictionary, RadioButton[] radioArray, String port)
-        {
-            this.protocolSendDictionary = protocolSendDictionary;
-            this.protocolReceiveDictionary = protocolReceiveDictionary;
-            this.radioArray = radioArray;
-            this.SelectedPort = port;
-            InitializeComponent();
-            ready = true;
-            //var mainWindow = (MainWindow)Application.Current.MainWindow;
-        }
-		*/
+
 		public void SetToReceive()
 		{
 			textBoxB.IsEnabled = false;
@@ -76,17 +45,7 @@ namespace DMX512_analyzator
 			textBoxA.Text = Convert.ToString(ScrollBarA.Value);
 		}
 
-		private void ScrollBarA_KeyUp(object sender, KeyEventArgs e)
-		{
-			//textBoxA.Text=Convert.ToString(int.Parse(textBoxA.Text) - 1);
-		}
-
-		private void ScrollBarA_KeyDown(object sender, KeyEventArgs e)
-		{
-			//textBoxA.Text = Convert.ToString(int.Parse(textBoxA.Text) +1);
-		}
-
-		private void textBoxA_TextChanged(object sender, TextChangedEventArgs e) //vymyslet jak to bude fungovat když bude zaškrtlej radioBox
+		private void textBoxA_TextChanged(object sender, TextChangedEventArgs e) 
 		{
 			ScrollBarA.Value = (int.Parse(textBoxA.Text));
 			//int.TryParse(textBoxA.Text, ScrollBarA.Value);
@@ -120,45 +79,7 @@ namespace DMX512_analyzator
                     userSettings.ProtocolDictionary[userSettings.SelectedPort].SendBin(textBoxB, int.Parse(textBoxA.Text));
 			}
 		}
-			/*if (selectedFunction == 1)
-			{
-				if (radioArray[0].IsChecked == true)
-				{
-					protocolSendDictionary[SelectedPort].SendHex(textBoxB, int.Parse(textBoxA.Text));
-				}
-				else if (radioArray[1].IsChecked == true)
-				{
-					protocolSendDictionary[SelectedPort].SendDec(textBoxB, int.Parse(textBoxA.Text));
-				}
-				else if (radioArray[2].IsChecked == true)
-				{
-					protocolSendDictionary[SelectedPort].SendBin(textBoxB, int.Parse(textBoxA.Text));
-				}
-			}*/
-            }
-		public void setFormat(int format)
-		{
-			this.format = format;
-		}
-
-		private void ScrollBarA_PreviewTouchUp(object sender, TouchEventArgs e)
-		{
-
-		}
-
-		private void ScrollBarA_PreviewTouchDown(object sender, TouchEventArgs e)
-		{
-			//textBoxA.Text = Convert.ToString(int.Parse(textBoxA.Text) - 1);
-		}
-
-		private void ScrollBarA_PreviewTouchDown(object sender, StylusButtonEventArgs e)
-		{
-		}
-
-		private void ScrollBarA_PreviewTouchUp(object sender, StylusButtonEventArgs e)
-		{
-
-		}
+           }
 
 		private void ScrollBarA_PreviewStylusButtonDown(object sender, StylusButtonEventArgs e)
 		{

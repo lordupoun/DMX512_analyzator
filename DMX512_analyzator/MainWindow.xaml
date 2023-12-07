@@ -40,7 +40,7 @@
         </GroupBox>
         <GroupBox Grid.Column="1" Header="Funkce" Margin="555,246,4,91">
             <StackPanel>
-                <RadioButton Margin="0,2,0,0" HorizontalAlignment="Left" x:Name="radioReceive" Content="Příjem signálu" IsChecked="True"  Height="15" Width="100" Checked="radioRecieve_Checked"/>
+                <RadioButton Margin="0,2,0,0" HorizontalAlignment="Left" x:Name="radioReceive" Content="Příjem signálu" IsChecked="True"  Height="15" Width="100" Checked="radioReceive_Checked"/>
                 <RadioButton  HorizontalAlignment="Left" x:Name="radioSend" Content="Odesílání signálu"  Height="15" Width="120" Checked="radioSend_Checked"/>
             
             <RadioButton HorizontalAlignment="Left" x:Name="radioEdit" Content="Editace signálu" Height="15" Width="100" IsEnabled="False"/>
