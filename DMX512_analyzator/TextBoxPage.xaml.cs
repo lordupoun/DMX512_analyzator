@@ -49,7 +49,7 @@ namespace DMX512_analyzator
                 textBoxArray[i].IsReadOnly = false;
                 textBoxArray[i].Background = Brushes.Transparent;
             }
-			//Refresh();
+			Refresh();
         }
 		
         private void text_changed(object sender, TextChangedEventArgs e) //Event změny textu v textboxu
