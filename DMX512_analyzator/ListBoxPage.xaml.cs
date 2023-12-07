@@ -35,10 +35,24 @@ namespace DMX512_analyzator
 		public void SetToReceive()
 		{
 			textBoxB.IsEnabled = false;
-		}
+			Refresh(); //Receive jej sice refreshne sám, ale v případě, že není zapnutý tam zůstane trčet hodnota z Send
+        }
 		public void SetToSend()
 		{
             textBoxB.IsEnabled = true;
+            Refresh();
+        }
+        public void SetSendReceive_Auto()//automatická funkce, která upraví rozhraní dle aktuální vybraného režimu příjem/odesílání
+        {
+            if (userSettings.SelectedFunction == 0)
+            {
+                SetToReceive();
+
+            }
+            if (userSettings.SelectedFunction == 1)
+            {
+                SetToSend();
+            }
         }
         private void ScrollBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
@@ -103,7 +117,7 @@ namespace DMX512_analyzator
 					textBoxB.Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getToSendValue(int.Parse(textBoxA.Text)), 2);
 				}
 			}
-            if (userSettings.SelectedFunction == 0)
+            if (userSettings.SelectedFunction == 0)//Prozatím se nakopírují stejná data
             {
                 if (userSettings.RadioArray[0].IsChecked == true)
                 {

@@ -38,9 +38,9 @@ namespace DMX512_analyzator
             for (int i = 0; i < textBoxArray.Length; i++)
 			{
 				textBoxArray[i].IsReadOnly = true;
-                textBoxArray[i].Background = Brushes.LightGray;
-                textBoxArray[i].Text = "0";
+                textBoxArray[i].Background = Brushes.LightGray;               
             }
+			Refresh();//Receive jej sice refreshne sám, ale v případě, že není zapnutý tam zůstane trčet hodnota z Send
         }
         public void SetToSend()
         {
@@ -51,7 +51,18 @@ namespace DMX512_analyzator
             }
 			Refresh();
         }
-		
+		public void SetSendReceive_Auto()//automatická funkce, která upraví rozhraní dle aktuální vybraného režimu příjem/odesílání
+		{
+			if(userSettings.SelectedFunction==0)
+			{
+				SetToReceive();
+
+            }
+            if (userSettings.SelectedFunction == 1)
+            {
+				SetToSend();
+            }
+        }
         private void text_changed(object sender, TextChangedEventArgs e) //Event změny textu v textboxu
 		{
 			

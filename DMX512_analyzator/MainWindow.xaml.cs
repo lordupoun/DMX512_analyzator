@@ -41,11 +41,14 @@ namespace DMX512_analyzator
 	{
 		/// <summary>Znovu načte stránku.</summary>
 		void Refresh();
-		/// <summary>Nastaví GUI stránky na přijímání signálu.</summary>
+		/// <summary>Nastaví GUI a obsah stránky na přijímání signálu a refreshne stránku.</summary> //Obsah se musí nastavit, protože obsah Receive a Send je rozdílnej, pro Send se musí refreshovat, aby se načetly hodnoty, u Receive aby pokud je vypnutý nezůstaly v GUI hodnoty Sendu
 		void SetToReceive();
-		/// <summary>Nastaví GUI stránky na odesílání signálu.</summary>
+		/// <summary>Nastaví GUI a obsah stránky na odesílání signálu a refreshne stránku.</summary>
 		void SetToSend();
-	}
+        /// <summary>Nastaví GUI a obsah stránky na odesílání/přijímání signálu automaticky a refreshne stránku.</summary>
+        void SetSendReceive_Auto();
+
+    }
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
@@ -54,7 +57,7 @@ namespace DMX512_analyzator
 		public Dictionary<string, Protocol> ProtocolDictionary { get; set; } //TODO: Odebrat set
 		public RadioButton[] RadioArray { get; set; }
 		public String SelectedPort { get; set; } //TODO: Přidat otazníčky
-		public int SelectedFunction { get; set; }//když předám jako radioButtony, čas HW se prakticky neušetří, asi to můžu přehodit zpět tak jak to bylo, nebo naopak přehodit SelectedPort, aby vše bylo stejně - ale to pak bude všude psaný přidělování, který je ve vlastnostech objektu stejně už jednou přidělený
+		public int SelectedFunction { get; set; }//0=Receive; 1=Send//když předám jako radioButtony, čas HW se prakticky neušetří, asi to můžu přehodit zpět tak jak to bylo, nebo naopak přehodit SelectedPort, aby vše bylo stejně - ale to pak bude všude psaný přidělování, který je ve vlastnostech objektu stejně už jednou přidělený
 	}
 
 	public partial class MainWindow : Window
@@ -127,14 +130,16 @@ namespace DMX512_analyzator
 		{
 			mainFrame.Navigate(listBoxPage);
 			CurrentPage = (IBasePage)listBoxPage;
-			CurrentPage.Refresh();
+            CurrentPage.SetSendReceive_Auto();
+            //CurrentPage.Refresh();
 		}
 
 		private void ChangeToTextBoxPage(object sender, RoutedEventArgs e)
 		{
 			mainFrame.Navigate(textBoxPage);
 			CurrentPage = (IBasePage)textBoxPage;
-			CurrentPage.Refresh();
+            CurrentPage.SetSendReceive_Auto();
+            //CurrentPage.Refresh();
 		}
 
 		private void RadioHex_Checked(object sender, RoutedEventArgs e) //smazat
@@ -218,7 +223,7 @@ namespace DMX512_analyzator
 		{
 
 			userSettings.SelectedFunction = 1; //TODO: Předělat zpět na array checkboxu
-			CurrentPage.SetToSend();
+			CurrentPage.SetToSend();//Změní se obsah i design
 			if (protocolDictionary[(String)portBox.SelectedValue].Sending == true)//TODO: ElseIf
 			{
 				buttonStart.IsEnabled = false;

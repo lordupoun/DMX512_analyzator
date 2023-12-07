@@ -25,6 +25,10 @@ namespace DMX512_analyzator
 			Receiving = false;
 			//bool isOpen=false;
             this.port = port;
+			/*foreach(byte i in toReceive)
+			{
+				toReceive[i] = 0;
+			}*/
 		}
 		private async Task Send()
 		{
@@ -131,7 +135,7 @@ namespace DMX512_analyzator
 			/*if (toSend[index] == null)
 				return 0;
 			else*/
-			return toSend[index];
+			return toReceive[index];
 		}
 	}
 }
