@@ -64,8 +64,8 @@ namespace DMX512_analyzator
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			if (userSettings.SelectedFunction == 1)
-			{ 
+		if (userSettings.SelectedFunction == 1)
+		{ 
 			if (userSettings.RadioArray[0].IsChecked == true)
 			{
                     userSettings.ProtocolDictionary[userSettings.SelectedPort].SendHex(textBoxB, int.Parse(textBoxA.Text));

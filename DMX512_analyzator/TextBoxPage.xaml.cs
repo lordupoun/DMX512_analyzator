@@ -28,7 +28,7 @@ namespace DMX512_analyzator
 
 		public TextBoxPage(UserSettings userSettings)
 		{
-			this.userSettings=userSettings;//předá všechny informace z MainWindow
+			this.userSettings=userSettings;
             InitializeComponent();
             textBoxArray = mainGrid.Children.OfType<TextBox>().Cast<TextBox>().ToArray(); //Castování kolekce textboxů na array
             pageLoaded = true;
@@ -49,7 +49,7 @@ namespace DMX512_analyzator
                 textBoxArray[i].IsReadOnly = false;
                 textBoxArray[i].Background = Brushes.Transparent;
             }
-			Refresh();
+			//Refresh();
         }
 		
         private void text_changed(object sender, TextChangedEventArgs e) //Event změny textu v textboxu

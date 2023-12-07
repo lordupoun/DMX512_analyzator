@@ -43,7 +43,7 @@ namespace DMX512_analyzator
 		void Refresh();
 		/// <summary>Nastaví GUI stránky na přijímání signálu.</summary>
 		void SetToReceive();
-		/// <summary>Nastaví GUI stránky na odesílání signálu a znovu načte hodnoty.</summary>
+		/// <summary>Nastaví GUI stránky na odesílání signálu.</summary>
 		void SetToSend();
 	}
 	/// <summary>
