@@ -135,3 +135,4 @@ namespace DMX512_analyzator
 		}
 	}
 }
+//...
