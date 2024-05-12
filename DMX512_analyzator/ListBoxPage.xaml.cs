@@ -133,5 +133,9 @@ namespace DMX512_analyzator
                 }
             }
         }
-	}
+        public void ShowPacket(byte[] packet)
+        {
+
+        }
+    }
 }

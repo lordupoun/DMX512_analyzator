@@ -37,7 +37,7 @@ using System.ComponentModel;
 //Event je vlastně něco jako přerušení, nicméně přímo v kódu s vytvořeným GUI to tady nepotřebuju (Je to potřeba buď na uživatelskou reakci, nebo při dokončení něčeho na co se čeká)
 namespace DMX512_analyzator
 {
-	public interface IBasePage
+	public interface IBasePage //Rozhraní stránek - každá se chová trochu jinak, proto potřebuje různé realizace metod, které sdílí pouze názvy (proto interface)
 	{
 		/// <summary>Znovu načte stránku.</summary>
 		void Refresh();
@@ -47,12 +47,14 @@ namespace DMX512_analyzator
 		void SetToSend();
         /// <summary>Nastaví GUI a obsah stránky na odesílání/přijímání signálu automaticky a refreshne stránku.</summary>//...
         void SetSendReceive_Auto();
+        /// <summary>Zobrazí vložený paket - byte[520]</summary>
+        void ShowPacket(byte[] packet);
 
     }
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public class UserSettings //Ideálěn Singleton obsahující všechna nastavení mainWindow -- spojuje stránky; protože třídy z WPF nejdou jednoduše dědit (a stejně by to nešlo, protože bych musel měnit parametry dvou instancí najednou)
+	public class UserSettings //Třída pomocí které předávám uživatelská nastavení v mainWindow stránkám (Page) - aby se dala předávat jedním objektem //Ideálěn Singleton obsahující všechna nastavení mainWindow -- spojuje stránky; protože třídy z WPF nejdou jednoduše dědit (a stejně by to nešlo, protože bych musel měnit parametry dvou instancí najednou)
 	{
 		public Dictionary<string, Protocol> ProtocolDictionary { get; set; } //TODO: Odebrat set
 		public RadioButton[] RadioArray { get; set; }
@@ -68,7 +70,7 @@ namespace DMX512_analyzator
 		Dictionary<string, Protocol> protocolDictionary = new Dictionary<String, Protocol>(); //TODO: Zrušit - může se nastavovat přímo
 		ListBoxPage listBoxPage;
 		TextBoxPage textBoxPage;
-		IBasePage CurrentPage; //Interface stránek (Page) - určuje právě otevřenou stránku
+		IBasePage CurrentPage; //Interface stránek (Page) - určuje právě otevřenou stránku //Díky interface mohu volat metody různých tříd stejným voláním, aniž bych musel ifovat
 		UserSettings userSettings = new UserSettings();
 		public MainWindow()
 		{
@@ -80,7 +82,7 @@ namespace DMX512_analyzator
 			portBox.SelectedIndex = 0;
 			try
 			{
-				protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue));
+				protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue, OnPacketReceived));
 			}
 			catch
 			{
@@ -92,7 +94,7 @@ namespace DMX512_analyzator
 			userSettings.SelectedPort = (String)portBox.SelectedValue; //Předávám Stringem, kvůli nadbytku explicitního castování v jiném případě
 			userSettings.SelectedFunction = 0;
 			textBoxPage = new TextBoxPage(userSettings);
-			listBoxPage = new ListBoxPage(userSettings);
+			listBoxPage = new ListBoxPage(userSettings); //TODO: Vynechat spouštění - všechna rozložení nemusí být vytvořena od začátku, ale až při kliknutí
 			mainFrame.Navigate(textBoxPage); //Default
 			CurrentPage = textBoxPage; //Default
 			CurrentPage.SetToReceive(); //Default
@@ -107,6 +109,7 @@ namespace DMX512_analyzator
 			else if (radioReceive.IsChecked == true)
 			{
 				protocolDictionary[(String)portBox.SelectedValue].StartReceiving();
+				//Subscribe to event function for selectedThing//Zjistit kde je inicializovaná třída Protocol
 			}
 			buttonStart.IsEnabled = false;
 			buttonStop.IsEnabled = true;
@@ -183,7 +186,7 @@ namespace DMX512_analyzator
 				userSettings.SelectedPort = (String)portBox.SelectedValue;
 				if (protocolDictionary.ContainsKey((String)portBox.SelectedValue) == false)
 				{
-					protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue));
+					protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue, OnPacketReceived));
 				}
 
 				if (radioSend.IsChecked == true)
@@ -254,9 +257,14 @@ namespace DMX512_analyzator
 				}
 			}
 		}
+        private void OnPacketReceived(byte[] Packet) //Musí jít přes MainWindows - nemůže posílat do více Pages najednou (není to event); co kdybych vpisoval data rovnou do proměnné? - to by musel neustále měnit hodnoty, takhle to při přijímání nefunguje (u odesílání neustále odesílá jakoukoliv přidělenou hodnotu)
+        {
+			byte[] test = Packet;
+			CurrentPage.ShowPacket(test);			
+        }
 
 
-	}
+    }
 }
 //co kdyby měl založit class uživatel?
 //načtení
