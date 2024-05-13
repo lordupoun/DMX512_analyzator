@@ -35,11 +35,13 @@ namespace DMX512_analyzator
 		public void SetToReceive()
 		{
 			textBoxB.IsEnabled = false;
+			ConfirmButton.IsEnabled = false;
 			Refresh(); //Receive jej sice refreshne sám, ale v případě, že není zapnutý tam zůstane trčet hodnota z Send
         }
 		public void SetToSend()
 		{
             textBoxB.IsEnabled = true;
+            ConfirmButton.IsEnabled = true;
             Refresh();
         }
         public void SetSendReceive_Auto()//automatická funkce, která upraví rozhraní dle aktuální vybraného režimu příjem/odesílání
@@ -61,7 +63,18 @@ namespace DMX512_analyzator
 
 		private void textBoxA_TextChanged(object sender, TextChangedEventArgs e) 
 		{
-			ScrollBarA.Value = (int.Parse(textBoxA.Text));
+			int parsedValue;
+			if(int.TryParse(textBoxA.Text, out parsedValue))
+			{
+                ScrollBarA.Value = parsedValue;
+				if(parsedValue>512)
+				textBoxA.Text = "0";
+            }
+			else
+			{
+                ScrollBarA.Value = 0;
+				textBoxA.Text = "0";
+            }			
 			//int.TryParse(textBoxA.Text, ScrollBarA.Value);
 
             TextBox boxChanged = (TextBox)sender;
@@ -78,29 +91,30 @@ namespace DMX512_analyzator
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-		if (userSettings.SelectedFunction == 1)
-		{ 
-			if (userSettings.RadioArray[0].IsChecked == true)
-			{
-                    userSettings.ProtocolDictionary[userSettings.SelectedPort].SendHex(textBoxB, int.Parse(textBoxA.Text));
+			if (userSettings.SelectedFunction == 1)
+			{ 
+				if (userSettings.RadioArray[0].IsChecked == true)
+				{
+						userSettings.ProtocolDictionary[userSettings.SelectedPort].SendHex(textBoxB, int.Parse(textBoxA.Text));
+				}
+				else if (userSettings.RadioArray[1].IsChecked == true)
+				{
+						userSettings.ProtocolDictionary[userSettings.SelectedPort].SendDec(textBoxB, int.Parse(textBoxA.Text));
+				}
+				else if (userSettings.RadioArray[2].IsChecked == true)
+				{
+						userSettings.ProtocolDictionary[userSettings.SelectedPort].SendBin(textBoxB, int.Parse(textBoxA.Text));
+				}
 			}
-			else if (userSettings.RadioArray[1].IsChecked == true)
-			{
-                    userSettings.ProtocolDictionary[userSettings.SelectedPort].SendDec(textBoxB, int.Parse(textBoxA.Text));
-			}
-			else if (userSettings.RadioArray[2].IsChecked == true)
-			{
-                    userSettings.ProtocolDictionary[userSettings.SelectedPort].SendBin(textBoxB, int.Parse(textBoxA.Text));
-			}
-		}
-           }
+        }
 
 		private void ScrollBarA_PreviewStylusButtonDown(object sender, StylusButtonEventArgs e)
 		{
 			MessageBox.Show("");
 			textBoxA.Text = Convert.ToString(int.Parse(textBoxA.Text) + 1);
 		}
-		public void Refresh()
+        /// <summary>Obnoví data v GUI podle uživatelem zvoleného nastavení.</summary>
+        public void Refresh()
 		{
 			if (userSettings.SelectedFunction == 1)
 			{
@@ -118,7 +132,7 @@ namespace DMX512_analyzator
 				}
 			}
             if (userSettings.SelectedFunction == 0)//Prozatím se nakopírují stejná data
-            {
+            {				
                 if (userSettings.RadioArray[0].IsChecked == true)
                 {
                     textBoxB.Text = Convert.ToString(userSettings.ProtocolDictionary[userSettings.SelectedPort].getReceivedValue(int.Parse(textBoxA.Text)), 16);
@@ -133,9 +147,24 @@ namespace DMX512_analyzator
                 }
             }
         }
+        /// <summary>Vypíše přijatý paket do GUI.</summary> //TODO: V přetížení předávat i offset čtecího algoritmu (délku hlavičky)
         public void ShowPacket(byte[] packet)
         {
-
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (userSettings.RadioArray[0].IsChecked == true)
+                {
+                    textBoxB.Text= Convert.ToString(packet[int.Parse(textBoxA.Text)+2], 16);
+                }
+                if (userSettings.RadioArray[1].IsChecked == true)
+                {
+                    textBoxB.Text = Convert.ToString(packet[int.Parse(textBoxA.Text) + 2]);
+                }
+                if (userSettings.RadioArray[2].IsChecked == true)
+                {
+                    textBoxB.Text = Convert.ToString(packet[int.Parse(textBoxA.Text) + 2], 2).PadLeft(8, '0');
+                }
+            });
         }
     }
 }

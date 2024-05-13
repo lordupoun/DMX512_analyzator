@@ -21,25 +21,31 @@ namespace DMX512_analyzator
 		public bool Sending { get; private set; }
 		public bool Receiving { get; private set; }
 		SerialPort sp = new SerialPort();
-        //
+        
+		//Přijímání:
         const int packetSize = 520;
-        //const int start = 1;
         static byte[] receivedBytes = new byte[packetSize * 2];
         static byte[] packet = new byte[packetSize];
-        //static int bytesRead = 0;
         static bool findFirstPacket = true;
         static int index = 0;
-        //static StreamWriter writer;
         static int availableBytes;
-        //static bool test = true;
+        int packetsDropped = 0;
         private Action<byte[]> packetReceivedCallback;
+        private Action<int> packetDropped;
+        //---------
+        //static StreamWriter writer;
+        //static bool test = true;
 
 
-        public Protocol(String port, Action<byte[]> packetReceivedCallback) //Zvolení portu vytvoří novou instanci třídy Protocol (pokud ještě není vytvořena)
+
+
+
+        public Protocol(String port, Action<byte[]> packetReceivedCallback, Action<int> packetDropped) //Zvolení portu vytvoří novou instanci třídy Protocol (pokud ještě není vytvořena)
 		{
 			Sending = false;
 			Receiving = false;
             this.packetReceivedCallback = packetReceivedCallback;
+            this.packetDropped = packetDropped;
             //bool isOpen=false;
             this.port = port;
 			/*foreach(byte i in toReceive)
@@ -47,7 +53,9 @@ namespace DMX512_analyzator
 				toReceive[i] = 0;
 			}*/
 		}
-		private async Task Send()
+
+        /// <summary>Odesílací algoritmus.</summary>
+        private async Task Send()
 		{
 			sp.Write(toSend, 0, toSend.Length);
 			await Task.Delay(30); //přidat režim kompatibility -> 1ms pro FTDI; 30ms pro ostatní
@@ -56,7 +64,9 @@ namespace DMX512_analyzator
 			sp.BreakState = false; //přidat ještě jednou Delay(MAB)
 			 //-------------------               
 		}
-		public async Task StartSending()
+
+        /// <summary>Započne odesílání.</summary>
+        public async Task StartSending()
 		{
 			//
 			if (sp.IsOpen == false)//TODO: Odstranit, tlačítka uživatele nenechají kliknout když by bylo odesílání spuštěné ---- Pozor to není pravda, toto je ochrana před druhým otevření portu sp
@@ -69,7 +79,8 @@ namespace DMX512_analyzator
 				sp.Handshake = Handshake.None;
 				sp.ReadTimeout = 500;
 				sp.WriteTimeout = 500;
-				sp.Open(); //přidat try catch pokud se neotevře
+                sp.ReadBufferSize = 8192;
+                sp.Open(); //přidat try catch pokud se neotevře
 			}
 			Sending = true;
 
@@ -78,7 +89,9 @@ namespace DMX512_analyzator
 				await Send();
 			}
 		}
-		public async Task StartReceiving()
+
+        /// <summary>Započne přijímání.</summary>
+        public void StartReceiving()
 		{
 			//
 			if (sp.IsOpen == false)
@@ -91,35 +104,47 @@ namespace DMX512_analyzator
 				sp.Handshake = Handshake.None;
 				sp.ReadTimeout = 500;
 				sp.WriteTimeout = 500;
-				sp.Open(); //přidat try catch pokud se neotevře
-                sp.DataReceived += SerialPort_DataReceived; //zde se děje problém!
                 sp.ReadBufferSize = 8192;
+                sp.Open(); //přidat try catch pokud se neotevře              
             }
+            sp.DataReceived += SerialPort_DataReceived; //zde se děje problém!            
             Receiving = true;
             /*while (Receiving == true)
 			{
 				//await Receive();
 			}*/
 		}
-		public async Task Receive()
-		{
-			//await Task.Delay(30);
-		}
 
-		
-		public void StopReceiving()
+        /// <summary>Ukončí přijímání.</summary>
+        public void StopReceiving()
 		{
 		Receiving = false;
-			if(Sending==false)
+        sp.DataReceived -= SerialPort_DataReceived;
+        if (Sending==false)
 			{ 
-			sp.Close(); //uzavře port pokud se již nepoužívá
-            sp.DataReceived -= SerialPort_DataReceived;
+			sp.Close(); //uzavře port pokud se již nepoužívá            
             }
 		}
-		public void StopSending()
+
+        /// <summary>Odhlásí přijímací event (zastaví přijímací smyčku) - používá se v případě, že uživatel neprohlíží GUI
+		/// - tím pádem zůstane COM port se statusem aktivního přijímání, ale algoritmus přijímání na pozadí neběží, aby nezatěžovalo aplikaci.
+		/// Při zvolení původního COM portu nebo režimu přijímání, se opět spustí (viz StartReceivingEvent())</summary>
+        public void StopReceivingEvent()
+        {
+            sp.DataReceived -= SerialPort_DataReceived;
+        }
+
+        /// <summary>Přihlásí přijímací event (spustí přijímací smyčku)</summary>
+        public void StartReceivingEvent()
+        {
+            sp.DataReceived += SerialPort_DataReceived;
+        }
+
+        /// <summary>Ukončí odesílání</summary>
+        public void StopSending()
 		{
 		Sending = false;
-			if(Receiving==false)
+		if(Receiving==false)
 			{ 
 			sp.Close(); //uzavře port pokud se již nepoužívá
             }
@@ -154,10 +179,11 @@ namespace DMX512_analyzator
 		{
 			/*if (toSend[index] == null)
 				return 0;
-			else*/
-			return toReceive[index];
+			else*/			
+            return toReceive[index];
 		}
-		private async void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        /// <summary>Přijímací algoritmus. Metoda vyvolaná eventem pro přijímání dat. Event se automaticky unsubscribne, pokud není v GUI používán.</summary>
+        private async void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
 		{
 			await Task.Run(() =>
 			{
@@ -192,9 +218,11 @@ namespace DMX512_analyzator
 						}                  //nezdržuje se to někde při array copy?
 						if (packetFound == false)
 						{
-							//Console.WriteLine("Paket nenalezen");
-							//serialPort.ReadExisting();
-							findFirstPacket = true;
+                            //Console.WriteLine("Paket nenalezen");
+                            //serialPort.ReadExisting();
+                            packetsDropped += 1;
+                            packetDropped?.Invoke(packetsDropped);
+                            findFirstPacket = true;
 						}
 					}
 				}
@@ -231,12 +259,21 @@ namespace DMX512_analyzator
 						{
 							//Console.WriteLine("Paket nenalezen");
 							//serialPort.ReadExisting();
+							packetsDropped += 1;
+							packetDropped?.Invoke(packetsDropped);
 							findFirstPacket = true;
+							//DroppedPacket
 						}
 					}
 				}
 			});
 		}
+        /// <summary>Vyresetuje počítadlo nerozpoznaných paketů.</summary>
+        public void ResetPacketsDropped()
+		{
+			packetsDropped = 0;
+            packetDropped?.Invoke(packetsDropped);
+        }
 
     }
 }

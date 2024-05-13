@@ -33,6 +33,19 @@ using System.ComponentModel;
  * Opravit ListBox Page +1
  * Dodělat Grafiku
  * Pomalý režim -> odešle jen při stisknutí tlačítka? - ne
+ * Dodělat Grafiku
+ * Nápovědy
+ * Add Frames Dropped info
+ * ------------------ *
+ * Udělat Test
+ * Vyřešit prázdý Receive array v Protocol
+ *
+ * 
+ * Okomentovat kód
+ * Ukládání do souboru - event subscription je aktivní jen pokud se na něj dívám, nebo pokud ukládám do souboru.
+ * Režim editace - na zařízení by se spustil ten správný způsob odesílání (STM by poslouchalo vlastní protokol, PC by odesílalo vlastní protokol), ostatní by zůstalo stejné
+ * FreeStyler
+ * Ukládání souborů a časová osa - Vlevo soubor - Uložit (umístění, začátek nahrávání, konec nahrávání) - Pouze v režimu přijímání; Soubor - Načíst - pouze v režimu odesílání; Nejprve vypne všechno odesílání a přijímání; Signál půjde i přehrát - vždy když odešle jeden byte, začne posílat další.; V hlavičce může být uvedeno zda zrovna používá kódování, nebo ne (nepoužívá, v případě že by bylo zabráno více bytů
  * **/
 //Event je vlastně něco jako přerušení, nicméně přímo v kódu s vytvořeným GUI to tady nepotřebuju (Je to potřeba buď na uživatelskou reakci, nebo při dokončení něčeho na co se čeká)
 namespace DMX512_analyzator
@@ -54,7 +67,7 @@ namespace DMX512_analyzator
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public class UserSettings //Třída pomocí které předávám uživatelská nastavení v mainWindow stránkám (Page) - aby se dala předávat jedním objektem //Ideálěn Singleton obsahující všechna nastavení mainWindow -- spojuje stránky; protože třídy z WPF nejdou jednoduše dědit (a stejně by to nešlo, protože bych musel měnit parametry dvou instancí najednou)
+	public class UserSettings //Třída pomocí které předávám uživatelská nastavení v mainWindow stránkám (Page) - aby se dala předávat jedním objektem a zároveň byla předávána referencí (odkazem) - data se měnila i v ostatních objektech //Ideálěn Singleton obsahující všechna nastavení mainWindow -- spojuje stránky; protože třídy z WPF nejdou jednoduše dědit (a stejně by to nešlo, protože bych musel měnit parametry dvou instancí najednou)
 	{
 		public Dictionary<string, Protocol> ProtocolDictionary { get; set; } //TODO: Odebrat set
 		public RadioButton[] RadioArray { get; set; }
@@ -72,7 +85,9 @@ namespace DMX512_analyzator
 		TextBoxPage textBoxPage;
 		IBasePage CurrentPage; //Interface stránek (Page) - určuje právě otevřenou stránku //Díky interface mohu volat metody různých tříd stejným voláním, aniž bych musel ifovat
 		UserSettings userSettings = new UserSettings();
-		public MainWindow()
+		public String previouslySelectedPort;
+
+        public MainWindow()
 		{
 			InitializeComponent();
 			radioArray[0] = radioHex;
@@ -82,25 +97,27 @@ namespace DMX512_analyzator
 			portBox.SelectedIndex = 0;
 			try
 			{
-				protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue, OnPacketReceived));
+				protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue, OnPacketReceived, OnPacketDrop));
 			}
 			catch
 			{
-				MessageBox.Show("Zapojte prosím analyzátor do USB.");
+                MessageBox.Show("Zapojte prosím analyzátor do USB.", "Zařízení nenalezeno", MessageBoxButton.OK, MessageBoxImage.Warning);
+                //MessageBox.Show("Zapojte prosím analyzátor do USB.");
 			}
 			windowLoaded = true;
 			userSettings.ProtocolDictionary = protocolDictionary;
 			userSettings.RadioArray = radioArray;
-			userSettings.SelectedPort = (String)portBox.SelectedValue; //Předávám Stringem, kvůli nadbytku explicitního castování v jiném případě
-			userSettings.SelectedFunction = 0;
-			textBoxPage = new TextBoxPage(userSettings);
+			userSettings.SelectedPort = (String)portBox.SelectedValue; //Předávám Stringem, kvůli nadbytku explicitního castování v jiném případě            
+            userSettings.SelectedFunction = 0;
+            previouslySelectedPort = (String)portBox.SelectedValue;
+		    textBoxPage = new TextBoxPage(userSettings);
 			listBoxPage = new ListBoxPage(userSettings); //TODO: Vynechat spouštění - všechna rozložení nemusí být vytvořena od začátku, ale až při kliknutí
 			mainFrame.Navigate(textBoxPage); //Default
 			CurrentPage = textBoxPage; //Default
 			CurrentPage.SetToReceive(); //Default
 		}
-
-		private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        /// <summary>Chování GUI po zmáčknutí tlačítka START.</summary>
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
 		{
 			if (radioSend.IsChecked == true)
 			{
@@ -108,14 +125,16 @@ namespace DMX512_analyzator
 			}
 			else if (radioReceive.IsChecked == true)
 			{
-				protocolDictionary[(String)portBox.SelectedValue].StartReceiving();
-				//Subscribe to event function for selectedThing//Zjistit kde je inicializovaná třída Protocol
-			}
-			buttonStart.IsEnabled = false;
+                lPacketsDropped.Visibility = System.Windows.Visibility.Visible;
+                protocolDictionary[(String)portBox.SelectedValue].StartReceiving();                
+                //Subscribe to event function for selectedThing//Zjistit kde je inicializovaná třída Protocol
+            }
+			buttonStart.IsEnabled = false; //přesunout nahoru
 			buttonStop.IsEnabled = true;
 		}
 
-		private void ButtonStop_Click(object sender, RoutedEventArgs e)
+        /// <summary>Chování GUI po zmáčknutí tlačítka STOP.</summary>
+        private void ButtonStop_Click(object sender, RoutedEventArgs e)
 		{
 			if (radioSend.IsChecked == true)
 			{
@@ -124,10 +143,15 @@ namespace DMX512_analyzator
 			else if (radioReceive.IsChecked == true)
 			{
 				protocolDictionary[(String)portBox.SelectedValue].StopReceiving();
-			}
+                protocolDictionary[(String)portBox.SelectedValue].ResetPacketsDropped();
+                lPacketsDropped.Visibility = System.Windows.Visibility.Hidden;
+
+
+            }
 			buttonStart.IsEnabled = true;
 			buttonStop.IsEnabled = false;
 		}
+
 
 		private void ChangeToListBoxPage(object sender, RoutedEventArgs e)
 		{
@@ -177,24 +201,26 @@ namespace DMX512_analyzator
 			portBox.SelectedIndex = 0;
 		}
 
-		private void portBox_SelectionChanged(object sender, SelectionChangedEventArgs e) //Vybere nový port (jinou instanci)
+        /// <summary>Chování GUI po změně portu.</summary>
+        private void portBox_SelectionChanged(object sender, SelectionChangedEventArgs e) //Vybere nový port (jinou instanci)
 		{
 			//Předá aktuálně zvolený port ostatním stránkám (layoutům); předává se pomocí property, protože String nelze předat referencí
 			//Pozor! Musí být editováno pro všechny layouty
 			if (windowLoaded == true && portBox.SelectedValue != null)//Event se triggruje ještě když nemá Selcted Value, proto nesmí být null; 
-			{
-				userSettings.SelectedPort = (String)portBox.SelectedValue;
-				if (protocolDictionary.ContainsKey((String)portBox.SelectedValue) == false)
+			{                
+                userSettings.SelectedPort = (String)portBox.SelectedValue;
+                protocolDictionary[(String)portBox.SelectedValue].ResetPacketsDropped();
+                if (protocolDictionary.ContainsKey((String)portBox.SelectedValue) == false)
 				{
-					protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue, OnPacketReceived));
+					protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue, OnPacketReceived, OnPacketDrop));
 				}
 
 				if (radioSend.IsChecked == true)
 				{
 
 					if (protocolDictionary[(String)portBox.SelectedValue].Sending == true)//TODO: ElseIf
-					{
-						buttonStart.IsEnabled = false;
+					{						
+                        buttonStart.IsEnabled = false;
 						buttonStop.IsEnabled = true;
 					}
 					else
@@ -207,11 +233,14 @@ namespace DMX512_analyzator
 				}
 				else if (radioReceive.IsChecked == true) //COM port není null
 				{
-					if (protocolDictionary[(String)portBox.SelectedValue].Receiving == true)
+                    protocolDictionary[previouslySelectedPort].StopReceivingEvent(); //vypne přijímání zpráv pro původní port
+                    //MessageBox.Show("TEST");
+                    if (protocolDictionary[(String)portBox.SelectedValue].Receiving == true) //Získáno getterem
 					{
-						buttonStart.IsEnabled = false;
-						buttonStop.IsEnabled = true;
-					}
+                        protocolDictionary[(String)portBox.SelectedValue].StartReceivingEvent();
+                        buttonStart.IsEnabled = false;
+						buttonStop.IsEnabled = true;                        
+                    }
 					else
 					{
 						buttonStart.IsEnabled = true;
@@ -219,15 +248,18 @@ namespace DMX512_analyzator
 					}
 
 				}
-				CurrentPage.Refresh();
+				previouslySelectedPort = (String)portBox.SelectedValue;
+
+                CurrentPage.Refresh();
 			}
 		}
 		private void radioSend_Checked(object sender, RoutedEventArgs e)
-		{
-
-			userSettings.SelectedFunction = 1; //TODO: Předělat zpět na array checkboxu
-			CurrentPage.SetToSend();//Změní se obsah i design
-			if (protocolDictionary[(String)portBox.SelectedValue].Sending == true)//TODO: ElseIf
+		{            
+            userSettings.SelectedFunction = 1; //TODO: Předělat zpět na array checkboxu
+            protocolDictionary[(String)portBox.SelectedValue].StopReceivingEvent();
+            CurrentPage.SetToSend();//Změní se obsah i design
+            lPacketsDropped.Visibility = System.Windows.Visibility.Hidden;
+            if (protocolDictionary[(String)portBox.SelectedValue].Sending == true)//TODO: ElseIf
 			{
 				buttonStart.IsEnabled = false;
 				buttonStop.IsEnabled = true;
@@ -245,9 +277,12 @@ namespace DMX512_analyzator
 			{
 				userSettings.SelectedFunction = 0;
 				CurrentPage.SetToReceive();
-				if (protocolDictionary[(String)portBox.SelectedValue].Receiving == true)
+                lPacketsDropped.Visibility = System.Windows.Visibility.Visible;
+                protocolDictionary[(String)portBox.SelectedValue].ResetPacketsDropped();
+                if (protocolDictionary[(String)portBox.SelectedValue].Receiving == true)
 				{
-					buttonStart.IsEnabled = false;
+                    protocolDictionary[(String)portBox.SelectedValue].StartReceivingEvent();
+                    buttonStart.IsEnabled = false;
 					buttonStop.IsEnabled = true;
 				}
 				else
@@ -257,13 +292,24 @@ namespace DMX512_analyzator
 				}
 			}
 		}
+        /// <summary>Je vyvolána automaticky, když objekt Protocol přijme paket.</summary>
         private void OnPacketReceived(byte[] Packet) //Musí jít přes MainWindows - nemůže posílat do více Pages najednou (není to event); co kdybych vpisoval data rovnou do proměnné? - to by musel neustále měnit hodnoty, takhle to při přijímání nefunguje (u odesílání neustále odesílá jakoukoliv přidělenou hodnotu)
         {
-			byte[] test = Packet;
-			CurrentPage.ShowPacket(test);			
+			//byte[] test = Packet;
+			CurrentPage.ShowPacket(Packet);			
         }
-
-
+        /// <summary>Je vyvolána automaticky, když objekt Protocol nerozpozná paket.</summary>
+        private void OnPacketDrop(int PacketsDropped) //Musí jít přes MainWindows - nemůže posílat do více Pages najednou (není to event); co kdybych vpisoval data rovnou do proměnné? - to by musel neustále měnit hodnoty, takhle to při přijímání nefunguje (u odesílání neustále odesílá jakoukoliv přidělenou hodnotu)
+		{
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				lPacketsDropped.Content = "Ztracených paketů: " + PacketsDropped;
+			});
+        }
+        private void AboutShow(object sender, RoutedEventArgs e)
+        {
+			MessageBox.Show("Analyzátor DMX512 - v1.0\nVilém Brouček, 2024\nBakalářská práce\nVUT FEKT", "O programu", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }
 //co kdyby měl založit class uživatel?

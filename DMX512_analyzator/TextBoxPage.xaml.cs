@@ -25,6 +25,7 @@ namespace DMX512_analyzator
 		private TextBox[] textBoxArray = new TextBox[513];
 		private UserSettings userSettings; //Předává hodnoty všem Page v jednom objektu
 		TextBox boxChanged;
+		int pageOffset = 0;
 
 		public TextBoxPage(UserSettings userSettings)
 		{
@@ -38,7 +39,7 @@ namespace DMX512_analyzator
 			for (int i = 0; i < textBoxArray.Length; i++)
 			{
 				textBoxArray[i].IsReadOnly = true;
-				textBoxArray[i].Background = Brushes.LightGray;
+				textBoxArray[i].Background = Brushes.WhiteSmoke;
 			}
 			Refresh();//Receive jej sice refreshne sám, ale v případě, že není zapnutý tam zůstane trčet hodnota z Send
 		}
@@ -92,7 +93,8 @@ namespace DMX512_analyzator
 			}
 
 		}
-		public void Refresh()
+        /// <summary>Obnoví data v GUI podle vybraných parametrů.</summary>
+        public void Refresh()
 		{
 			if (userSettings.SelectedFunction == 1)
 			{
@@ -142,17 +144,82 @@ namespace DMX512_analyzator
 					}
 				}
 			}
-		}
+		} //textBoxArray[i].Text = Convert.ToString(packet[i+2]); //Sem to při odesílání nemá chodit
+		/// <summary>Vypíše přijatý paket do GUI.</summary>
 		public void ShowPacket(byte[] packet)
 		{
 			Application.Current.Dispatcher.Invoke(() =>
 			{
-				for (int i = 0; i < textBoxArray.Length; i++)
+				if (userSettings.RadioArray[0].IsChecked == true)
 				{
-					textBoxArray[i].Text = Convert.ToString(packet[i+2]); //Sem to při odesílání nemá chodit				
+					for (int i = 0; i < textBoxArray.Length; i++)
+					{
+						textBoxArray[i].Text = packet[i + 2 + pageOffset].ToString("X2");
+
+					}
+				}
+				if (userSettings.RadioArray[1].IsChecked == true)
+				{
+					for (int i = 0; i < textBoxArray.Length; i++)
+					{
+						textBoxArray[i].Text = Convert.ToString(packet[i + 2 + pageOffset]); //Sem to při odesílání nemá chodit	
+					}
+				}
+				if (userSettings.RadioArray[2].IsChecked == true)
+				{
+					for (int i = 0; i < textBoxArray.Length; i++)
+					{
+						textBoxArray[i].Text = Convert.ToString(packet[i + 2 + pageOffset], 2).PadLeft(8, '0');
+					}
 				}
 			});
 		}
-	}
+
+		private void ForwardButton_Click(object sender, RoutedEventArgs e)
+		{
+            pageOffset += 64; //původní byte bude 64, ale odstraní se
+            SetPagePosition();
+		}
+
+		private void BackButton_Click(object sender, RoutedEventArgs e)
+		{
+            pageOffset -= 64; //původní byte bude 64, ale odstraní se
+            SetPagePosition();
+        }
+
+        /// <summary>Chování GUI po přepnutí na zobrazení dalších bytů.</summary>
+        private void SetPagePosition()
+		{
+			pageNumber.Content = (pageOffset+64)/64+"/8";
+			l0.Content=(1+pageOffset)+"-"+(8 + pageOffset);
+            l1.Content = (9 + pageOffset) + "-" + (16 + pageOffset);
+            l2.Content = (17 + pageOffset) + "-" + (24 + pageOffset);
+            l3.Content = (25 + pageOffset) + "-" + (32 + pageOffset);
+            l4.Content = (33 + pageOffset) + "-" + (40 + pageOffset);
+            l5.Content = (41 + pageOffset) + "-" + (48 + pageOffset);
+            l6.Content = (49 + pageOffset) + "-" + (56 + pageOffset);
+            l7.Content = (57 + pageOffset) + "-" + (64 + pageOffset);
+            if (pageOffset+64 > 64)
+            {
+                textBox0.Visibility = System.Windows.Visibility.Hidden;
+				l0.Visibility= System.Windows.Visibility.Visible;
+                BackButton.IsEnabled = true;
+            }
+            else
+            {
+                textBox0.Visibility = System.Windows.Visibility.Visible;
+                l0.Visibility = System.Windows.Visibility.Hidden;
+                BackButton.IsEnabled = false;                
+            }
+			if(pageOffset+64>511)
+			{
+                ForwardButton.IsEnabled = false;
+            }
+			else
+			{
+                ForwardButton.IsEnabled = true;
+            }
+        }
+    }
 }
 //je vhodné přepisovat buňky? teď to funguje tak, že při změně režimu se přepíše obsah textBoxů do toSend, i přesto, že jsou tam shodný hodnoty
