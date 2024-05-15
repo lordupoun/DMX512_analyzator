@@ -1,4 +1,9 @@
-﻿using System;
+﻿/**
+ * Třída popisující stránku s jednotlivým zadáváním, která se vkládá do MainWindow přes Frame.
+ * 
+ * 
+ * */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlTypes;

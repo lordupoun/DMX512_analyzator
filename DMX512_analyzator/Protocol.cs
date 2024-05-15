@@ -1,4 +1,9 @@
-﻿using System;
+﻿/**
+ * Třída s ovládáním protokolu DMX512, přijímáním, odesíláním a zpracováním části dat.
+ * 
+ * 
+ * */
+using System;
 //using static System.Net.Mime.MediaTypeNames;
 using System.Diagnostics;
 using System.IO.Ports;

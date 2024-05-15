@@ -1,4 +1,9 @@
-﻿using System;
+﻿/**
+ * Třída popisující stránku s maticí textboxů, která se vkládá do MainWindow přes Frame.
+ * 
+ * 
+ * */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +24,7 @@ namespace DMX512_analyzator
 	/// Interaction logic for TextBoxPage.xaml
 	/// </summary>
 	/// 
-	public partial class TextBoxPage : Page, IBasePage
+	public partial class TextBoxPage : Page, IBasePage //Je rozšířeno
 	{
 		bool pageLoaded;
 		private TextBox[] textBoxArray = new TextBox[513];
@@ -66,7 +71,7 @@ namespace DMX512_analyzator
 		}
 		private void text_changed(object sender, TextChangedEventArgs e) //Event změny textu v textboxu
 		{
-
+			//Pouze pokud je zvolen režim odesílání
 			if (pageLoaded == true && userSettings.SelectedFunction == 1)//Zabraňuje pádu, TODO: Najít alternativu
 			{
 
