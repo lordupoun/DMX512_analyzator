@@ -109,10 +109,17 @@ namespace DMX512_analyzator
 				sp.Handshake = Handshake.None;
 				sp.ReadTimeout = 500;
 				sp.WriteTimeout = 500;
-                sp.ReadBufferSize = 8192;
-                sp.Open(); //přidat try catch pokud se neotevře              
-            }
-            sp.DataReceived += SerialPort_DataReceived; //zde se děje problém!            
+				sp.ReadBufferSize = 8192;
+				try
+				{
+					sp.Open(); //přidat try catch pokud se neotevře
+				}
+				catch
+				{
+					MessageBox.Show("Vybraný port se nepovedlo otevřít.\nZkontrolujte prosím, zda se jedná o COM port analyzátoru.", "Chyba", MessageBoxButton.OK, MessageBoxImage.Stop);
+				}
+			}
+			sp.DataReceived += SerialPort_DataReceived; //zde se děje problém!            
             Receiving = true;
             /*while (Receiving == true)
 			{
