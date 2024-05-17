@@ -216,7 +216,6 @@ namespace DMX512_analyzator
 			if (windowLoaded == true && portBox.SelectedValue != null)//Event se triggruje ještě když nemá Selcted Value, proto nesmí být null; 
 			{                
                 userSettings.SelectedPort = (String)portBox.SelectedValue;
-                protocolDictionary[(String)portBox.SelectedValue].ResetPacketsDropped();
                 if (protocolDictionary.ContainsKey((String)portBox.SelectedValue) == false)
 				{
 					protocolDictionary.Add((String)portBox.SelectedValue, new Protocol((String)portBox.SelectedValue, OnPacketReceived, OnPacketDrop));
@@ -256,7 +255,7 @@ namespace DMX512_analyzator
 
 				}
 				previouslySelectedPort = (String)portBox.SelectedValue;
-
+                protocolDictionary[(String)portBox.SelectedValue].ResetPacketsDropped();
                 CurrentPage.Refresh();
 			}
 		}
