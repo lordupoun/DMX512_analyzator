@@ -29,7 +29,7 @@ using System.Text.RegularExpressions;
 using System.ComponentModel;
 /**FAQ:
  * Proč jsem na předávání použil objekt - protože třídy od WPF nejdou pořádně dědit a interface neumožňuje vložení proměnných (navíc i kdyby, byly by stále vázané k instanci)
- * řekni si zda nepoužíváš if zbytečně!
+ * 
  * **/
 
 /**
@@ -318,49 +318,3 @@ namespace DMX512_analyzator
         }
     }
 }
-//co kdyby měl založit class uživatel?
-//načtení
-/*IEnumerable<TextBox> TextboxCollection = rootControl.Children.OfType<TextBox>();
-            foreach(TextBox tb in TextboxCollection)
-            {
-                tb.Text = "Text";
-            }*/
-//kliknutí na radioButton překonvertuje obsah všech buněk na příslušnej formát
-//PORT by se mohl předávat přes metodu set() -> nemusel by se na všechno předávat odkaz, ale zase je potřeba řešit jestli ten Page už existuje -> teď zbytečně předávám celej portBox, ale aspoň pokaždý nemusím nastavovat setPort() nebo setHex <- ale zase je to asi pomalejší
-//Nemusel bych hrabat v Mapě pokaždé - a potom pročistit zbytek kódu -> dát pryč to, co je v konstruktoru
-//Objekt by nemusel existovat hned, ale až potom co zadám výzvu -> to znamená změním design -> vadí něco, že existuje hned? stejně nic nedělá jen zabírá paměť - stejně ten program musí vědět, že nějakej objekt existuje
-/*...Send : Communicate tzn. Function
-Send.ToDictionary
-Receive.ToDictionary
--> vyžaduje aby byla vždy nastavená proměnná SelectedComminicate = Send/Receive
-->přidat do eventu ButtonChecked
-Stejne tak bych musel mít udělaný
-Hexadec : Format
-SelectedFormat=Hex
-SelectedFormat.Send
-Ale ono se to kombinuje - tzn.
-Odešli v hex
-Prijmi v dec - bylo by toho hodne a bylo by to zmatecny a o tom oop neni
-
-Jedine ze by byla jedna velka trida, kde je definovano vse - ale to by tam pak byly ify, ne? Ano a hlavne by to razeni postradalo logiku, protoze takhle predavam akorat veci z MainWindow do TextBoxPage a jinak by MW i TBP museli volat jednu třídu navíc. Ta vy navíc musel mít instanci, která by se musela předávat v konstruktoru. Pak by se volalo
-Instance.udelej(formatTakovy, funkceTakova, portTakovy) - přemýšlej nad tím - to by byl vlastně abstraction layer - programatorovi by se to lépe programovalo ale byli by tam zase samé ify - mohl bych to dělat i teď asi, od TBP mám instanci - a taky bych to dělal, jenže potřebuju nastavovat dvěma třídám najednou, a to můžu jen přes objekt (bez duplicity) a nebo přes IBasePage
-
-
-... Nebo:
-Na selectedPage není vlastnost
-Ale na IsChecked ano - mohu využívat aniž bych musel vytvářet pamatující proměnné
----> nic v proměnných, vše ve vlastnostech
-
-Proč mám send a receive solo? Asi zbytecne
-
-Protocol
-Bool sending
-Bool receiving
-
-Kdybych nepredaval pres objekt, ale metodama, musek bych mit metodu pro kazdej spustenej layout.
-A i kdyby byly zastreseny abstract classou (coz nemuzou, je tam jen interface bez prennych)
-
-1)kouknout jestli spojit send a receive
-2)kouknout jestli by interfacem nešli zprehlednit metody
-Nejsou sendy v page vsude stejny? Nejsou, rozdily by dosadit v ramci metod, ale ty metody v page jsou stejne vazany na event. I kdyz by to slo, byl by to zmatek
-*/

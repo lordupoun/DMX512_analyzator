@@ -5,10 +5,20 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>audio-input-xlr-icon(1).ico</ApplicationIcon>
+    <Authors>Vilem Broucek</Authors>
+    <Version>1.0.0</Version>
+    <Product>Analyzator DMX512</Product>
+    <Copyright>2024</Copyright>
+    <Description>Analyzator protokolu DMX512 pro pouziti s HW analyzatorem.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="audio-input-xlr-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="audio-input-xlr-icon(1).ico" />
   </ItemGroup>
 
   <ItemGroup>
